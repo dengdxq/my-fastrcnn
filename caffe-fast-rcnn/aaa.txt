@@ -1,0 +1,233 @@
+./aa.txt:./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/layer.hpp:   * (Forward_cpu or Forward_gpu) to compute the top blob values given the
+./aa.txt:./include/caffe/layer.hpp:   * Your layer should implement Forward_cpu and (optionally) Forward_gpu.
+./aa.txt:./include/caffe/layer.hpp:   * Your layer should implement Forward_cpu and (optionally) Forward_gpu.
+./aa.txt:./include/caffe/layer.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/layer.hpp:   *        Fall back to Forward_cpu() if unavailable.
+./aa.txt:./include/caffe/layer.hpp:    return Forward_cpu(bottom, top);
+./aa.txt:./include/caffe/layer.hpp:    Forward_cpu(bottom, top);
+./aa.txt:./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/data_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/data_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/data_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/data_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/data_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/fast_rcnn_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/fast_rcnn_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/vision_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/vision_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/vision_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/vision_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/vision_layers.hpp:  virtual void CrossChannelForward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/vision_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./include/caffe/python_layer.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/dummy_data_layer.cpp:void DummyDataLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/bnll_layer.cpp:void BNLLLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/im2col_layer.cpp:void Im2colLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/concat_layer.cpp:void ConcatLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/softmax_loss_layer.cpp:void SoftmaxWithLossLayer<Dtype>::Forward_cpu(
+./aa.txt:./src/caffe/layers/argmax_layer.cpp:void ArgMaxLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/hdf5_data_layer.cpp:void HDF5DataLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/threshold_layer.cpp:void ThresholdLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/base_data_layer.cpp:void BasePrefetchingDataLayer<Dtype>::Forward_cpu(
+./aa.txt:./src/caffe/layers/hinge_loss_layer.cpp:void HingeLossLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/tanh_layer.cpp:void TanHLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/accuracy_layer.cpp:void AccuracyLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/multinomial_logistic_loss_layer.cpp:void MultinomialLogisticLossLayer<Dtype>::Forward_cpu(
+./aa.txt:./src/caffe/layers/sigmoid_layer.cpp:void SigmoidLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/slice_layer.cpp:void SliceLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/memory_data_layer.cpp:void MemoryDataLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/sigmoid_cross_entropy_loss_layer.cpp:void SigmoidCrossEntropyLossLayer<Dtype>::Forward_cpu(
+./aa.txt:./src/caffe/layers/conv_layer.cpp:void ConvolutionLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/deconv_layer.cpp:void DeconvolutionLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/lrn_layer.cpp:void LRNLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/lrn_layer.cpp:    CrossChannelForward_cpu(bottom, top);
+./aa.txt:./src/caffe/layers/lrn_layer.cpp:void LRNLayer<Dtype>::CrossChannelForward_cpu(
+./aa.txt:./src/caffe/layers/euclidean_loss_layer.cpp:void EuclideanLossLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/mvn_layer.cpp:void MVNLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/contrastive_loss_layer.cpp:void ContrastiveLossLayer<Dtype>::Forward_cpu(
+./aa.txt:./src/caffe/layers/absval_layer.cpp:void AbsValLayer<Dtype>::Forward_cpu(
+./aa.txt:./src/caffe/layers/relu_layer.cpp:void ReLULayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/infogain_loss_layer.cpp:void InfogainLossLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/eltwise_layer.cpp:void EltwiseLayer<Dtype>::Forward_cpu(
+./aa.txt:./src/caffe/layers/inner_product_layer.cpp:void InnerProductLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/split_layer.cpp:void SplitLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/hdf5_output_layer.cpp:void HDF5OutputLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/flatten_layer.cpp:void FlattenLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/smooth_L1_loss_layer.cpp:void SmoothL1LossLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/exp_layer.cpp:void ExpLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/roi_pooling_layer.cpp:void ROIPoolingLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/prelu_layer.cpp:void PReLULayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/softmax_layer.cpp:void SoftmaxLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/power_layer.cpp:void PowerLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/pooling_layer.cpp:void PoolingLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./aa.txt:./src/caffe/layers/dropout_layer.cpp:void DropoutLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+Binary file ./build/src/caffe/layer_factory.o matches
+Binary file ./build/src/caffe/layers/deconv_layer.o matches
+Binary file ./build/src/caffe/layers/cudnn_relu_layer.o matches
+Binary file ./build/src/caffe/layers/power_layer.o matches
+Binary file ./build/src/caffe/layers/euclidean_loss_layer.o matches
+Binary file ./build/src/caffe/layers/concat_layer.o matches
+Binary file ./build/src/caffe/layers/data_layer.o matches
+Binary file ./build/src/caffe/layers/accuracy_layer.o matches
+Binary file ./build/src/caffe/layers/image_data_layer.o matches
+Binary file ./build/src/caffe/layers/cudnn_sigmoid_layer.o matches
+Binary file ./build/src/caffe/layers/pooling_layer.o matches
+Binary file ./build/src/caffe/layers/conv_layer.o matches
+Binary file ./build/src/caffe/layers/sigmoid_layer.o matches
+Binary file ./build/src/caffe/layers/flatten_layer.o matches
+Binary file ./build/src/caffe/layers/softmax_layer.o matches
+Binary file ./build/src/caffe/layers/cudnn_pooling_layer.o matches
+Binary file ./build/src/caffe/layers/hdf5_output_layer.o matches
+Binary file ./build/src/caffe/layers/multinomial_logistic_loss_layer.o matches
+Binary file ./build/src/caffe/layers/base_data_layer.o matches
+Binary file ./build/src/caffe/layers/contrastive_loss_layer.o matches
+Binary file ./build/src/caffe/layers/sigmoid_cross_entropy_loss_layer.o matches
+Binary file ./build/src/caffe/layers/inner_product_layer.o matches
+Binary file ./build/src/caffe/layers/mvn_layer.o matches
+Binary file ./build/src/caffe/layers/absval_layer.o matches
+Binary file ./build/src/caffe/layers/exp_layer.o matches
+Binary file ./build/src/caffe/layers/softmax_loss_layer.o matches
+Binary file ./build/src/caffe/layers/lrn_layer.o matches
+Binary file ./build/src/caffe/layers/window_data_layer.o matches
+Binary file ./build/src/caffe/layers/smooth_L1_loss_layer.o matches
+Binary file ./build/src/caffe/layers/argmax_layer.o matches
+Binary file ./build/src/caffe/layers/eltwise_layer.o matches
+Binary file ./build/src/caffe/layers/dropout_layer.o matches
+Binary file ./build/src/caffe/layers/split_layer.o matches
+Binary file ./build/src/caffe/layers/relu_layer.o matches
+Binary file ./build/src/caffe/layers/bnll_layer.o matches
+Binary file ./build/src/caffe/layers/tanh_layer.o matches
+Binary file ./build/src/caffe/layers/hinge_loss_layer.o matches
+Binary file ./build/src/caffe/layers/cudnn_conv_layer.o matches
+Binary file ./build/src/caffe/layers/slice_layer.o matches
+Binary file ./build/src/caffe/layers/infogain_loss_layer.o matches
+Binary file ./build/src/caffe/layers/hdf5_data_layer.o matches
+Binary file ./build/src/caffe/layers/prelu_layer.o matches
+Binary file ./build/src/caffe/layers/silence_layer.o matches
+Binary file ./build/src/caffe/layers/dummy_data_layer.o matches
+Binary file ./build/src/caffe/layers/cudnn_tanh_layer.o matches
+Binary file ./build/src/caffe/layers/roi_pooling_layer.o matches
+Binary file ./build/src/caffe/layers/threshold_layer.o matches
+Binary file ./build/src/caffe/layers/im2col_layer.o matches
+Binary file ./build/src/caffe/layers/cudnn_softmax_layer.o matches
+Binary file ./build/src/caffe/layers/memory_data_layer.o matches
+Binary file ./build/lib/libcaffe.a matches
+Binary file ./build/lib/libcaffe.so matches
+./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/loss_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/layer.hpp:   * (Forward_cpu or Forward_gpu) to compute the top blob values given the
+./include/caffe/layer.hpp:   * Your layer should implement Forward_cpu and (optionally) Forward_gpu.
+./include/caffe/layer.hpp:   * Your layer should implement Forward_cpu and (optionally) Forward_gpu.
+./include/caffe/layer.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/layer.hpp:   *        Fall back to Forward_cpu() if unavailable.
+./include/caffe/layer.hpp:    return Forward_cpu(bottom, top);
+./include/caffe/layer.hpp:    Forward_cpu(bottom, top);
+./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/neuron_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/data_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/data_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/data_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/data_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/data_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/fast_rcnn_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/fast_rcnn_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/vision_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/vision_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/vision_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/vision_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/vision_layers.hpp:  virtual void CrossChannelForward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/vision_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/common_layers.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./include/caffe/python_layer.hpp:  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+Binary file ./python/caffe/_caffe.so matches
+./src/caffe/layers/dummy_data_layer.cpp:void DummyDataLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/bnll_layer.cpp:void BNLLLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/im2col_layer.cpp:void Im2colLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/concat_layer.cpp:void ConcatLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/softmax_loss_layer.cpp:void SoftmaxWithLossLayer<Dtype>::Forward_cpu(
+./src/caffe/layers/argmax_layer.cpp:void ArgMaxLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/hdf5_data_layer.cpp:void HDF5DataLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/threshold_layer.cpp:void ThresholdLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/base_data_layer.cpp:void BasePrefetchingDataLayer<Dtype>::Forward_cpu(
+./src/caffe/layers/hinge_loss_layer.cpp:void HingeLossLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/tanh_layer.cpp:void TanHLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/accuracy_layer.cpp:void AccuracyLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/multinomial_logistic_loss_layer.cpp:void MultinomialLogisticLossLayer<Dtype>::Forward_cpu(
+./src/caffe/layers/sigmoid_layer.cpp:void SigmoidLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/slice_layer.cpp:void SliceLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/memory_data_layer.cpp:void MemoryDataLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/sigmoid_cross_entropy_loss_layer.cpp:void SigmoidCrossEntropyLossLayer<Dtype>::Forward_cpu(
+./src/caffe/layers/conv_layer.cpp:void ConvolutionLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/deconv_layer.cpp:void DeconvolutionLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/lrn_layer.cpp:void LRNLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/lrn_layer.cpp:    CrossChannelForward_cpu(bottom, top);
+./src/caffe/layers/lrn_layer.cpp:void LRNLayer<Dtype>::CrossChannelForward_cpu(
+./src/caffe/layers/euclidean_loss_layer.cpp:void EuclideanLossLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/mvn_layer.cpp:void MVNLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/contrastive_loss_layer.cpp:void ContrastiveLossLayer<Dtype>::Forward_cpu(
+./src/caffe/layers/absval_layer.cpp:void AbsValLayer<Dtype>::Forward_cpu(
+./src/caffe/layers/relu_layer.cpp:void ReLULayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/infogain_loss_layer.cpp:void InfogainLossLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/eltwise_layer.cpp:void EltwiseLayer<Dtype>::Forward_cpu(
+./src/caffe/layers/inner_product_layer.cpp:void InnerProductLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/split_layer.cpp:void SplitLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/hdf5_output_layer.cpp:void HDF5OutputLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/flatten_layer.cpp:void FlattenLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/smooth_L1_loss_layer.cpp:void SmoothL1LossLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/exp_layer.cpp:void ExpLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/roi_pooling_layer.cpp:void ROIPoolingLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/prelu_layer.cpp:void PReLULayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/softmax_layer.cpp:void SoftmaxLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/power_layer.cpp:void PowerLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/pooling_layer.cpp:void PoolingLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+./src/caffe/layers/dropout_layer.cpp:void DropoutLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
