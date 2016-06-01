@@ -1,3 +1,4 @@
+#-*- coding:utf-8 –*-
 import sys
 import os
 import dlib
@@ -45,6 +46,7 @@ if __name__ == '__main__':
     if len(sys.argv) < 5:
         print "ERROR: not enough arguments"
         print "Example:  python create_train_mat.py train.txt img_dir img_type save_path"
+        print "示例: python create_train_mat.py 标注的文件列表 输出xml格式的ground_truth目录 输出train.txt列表文件"
         exit()
     train_img_list = sys.argv[1]
     img_path = sys.argv[2]

@@ -1,12 +1,35 @@
 #!/bin/sh
-imglist='/home/jiayuan/Documents/checkcode/imglist.txt'
-trainlist='/home/jiayuan/Documents/checkcode/data/ImageSets/train.txt'
-imgdir='/home/jiayuan/Documents/checkcode/data/Images'
-outxml='/home/jiayuan/Documents/checkcode/test/Annotations'
-outmat='/home/jiayuan/Documents/checkcode/test'
+root_path='/home/jiayuan/Documents/checkcode'
+img_list=$root_path'/imglist.txt'
+train_list=$root_path'/data/ImageSets/train.txt'
+imgdir=$root_path'/data/Images'
+outxml=$root_path'/data/Annotations'
+outmat=$root_path
+allbox_path=$root_path'/data/ssbox'
+img_type='jpg'
 
 
-#python create_train_mat.py $trainlist $imgdir jpg $outmat 
-#echo "create mat finish!"
-python create_xml.py $imglist $outxml  
-echo "create xml finish!"
+if [ ! -f $img_list];then
+    echo "[ERROR]: imglist.txt no exist."
+    exit
+fi
+if [ ! -d $outxml];then
+    mkdir -p $outxml
+fi
+if [ ! -d $allbox_path];then
+    mkdir -p $allbox_path
+fi
+
+echo "[INFO]: create annotations xml files and trian.txt."
+python create_xml.py $imglist $outxml $train_list
+echo "[INFO]: finish."
+
+echo "[INFO]: create trian.mat."
+python create_train_mat.py $train_list $imgdir $img_type $outmat
+echo "[INFO]: finish!"
+
+echo "[INFO]: create all ssboxes.mat."
+python create_ssboxes.py $imglist $imgdir $allbox_path
+echo "[INFO]: finish!"
+
+
