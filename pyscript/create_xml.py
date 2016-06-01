@@ -99,6 +99,7 @@ if __name__=='__main__':
     #labelfile = '/Users/wangjj/Documents/download_code/imageset/imglist.txt'
     #save_path = '/Users/wangjj/Documents/download_code/imageset/xmls'
     #demo
+    print sys.argv
     if len(sys.argv) < 4:
         print "ERROR: not enough arguments"
         print "Example:  python create_xml.py imglist.txt output_dir"

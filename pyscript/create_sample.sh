@@ -9,19 +9,19 @@ allbox_path=$root_path'/data/ssbox'
 img_type='jpg'
 
 
-if [ ! -f $img_list];then
+if [ ! -f "$img_list" ];then
     echo "[ERROR]: imglist.txt no exist."
     exit
 fi
-if [ ! -d $outxml];then
+if [ ! -d "$outxml" ];then
     mkdir -p $outxml
 fi
-if [ ! -d $allbox_path];then
+if [ ! -d "$allbox_path" ];then
     mkdir -p $allbox_path
 fi
 
 echo "[INFO]: create annotations xml files and trian.txt."
-python create_xml.py $imglist $outxml $train_list
+python create_xml.py $img_list $outxml $train_list
 echo "[INFO]: finish."
 
 echo "[INFO]: create trian.mat."
@@ -29,7 +29,7 @@ python create_train_mat.py $train_list $imgdir $img_type $outmat
 echo "[INFO]: finish!"
 
 echo "[INFO]: create all ssboxes.mat."
-python create_ssboxes.py $imglist $imgdir $allbox_path
+python create_ssboxes.py $img_list $imgdir $allbox_path
 echo "[INFO]: finish!"
 
 

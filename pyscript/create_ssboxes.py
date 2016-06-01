@@ -20,7 +20,8 @@ def get_boxes_batch(list_filename, imgdir, savepath):
         if boxes==None:
             print '[ERROR]: %s can not get boxed!'%(filename)
             continue
-        scio.savemat(savepath+'/'+strs[1]+'.mat', mdict={'boxes':boxes})
+        names = strs[0].split('.')
+        scio.savemat(savepath+'/'+names[0]+'.mat', mdict={'boxes':boxes})
 
 
 def get_selective_search_boxes(imgdir, name):
