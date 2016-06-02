@@ -30,7 +30,7 @@ class Iterm(object):
         self.char = ''
         self.x = 0
 
-CLASSES = ('__background__','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M')
+CLASSES = ('__background__','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
 
 
 def vis_detections(ax, class_name, dets, thresh=0.5):
@@ -124,14 +124,14 @@ def demo(net, image_name, box_file, out_img, classes):
 if __name__ == '__main__':
     
     prototxt = '/home/jiayuan/Documents/download_code/fast-rcnn/models/checkcode/test.prototxt'
-    caffemodel = '/home/jiayuan/Documents/download_code/fast-rcnn/data/fast_rcnn_models/checkcode_fast_rcnn_iter_360000.caffemodel'
+    caffemodel = '/home/jiayuan/Documents/download_code/fast-rcnn/data/fast_rcnn_models/checkcode_fast_rcnn_iter_200000.caffemodel'
     caffe.set_mode_cpu()
     #caffe.set_mode_gpu()
     #caffe.set_device(0)
     net = caffe.Net(prototxt, caffemodel, caffe.TEST)
-    #class_tuple = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
-    class_tuple = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M')
-    img_name = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/Cb.jpg'
-    box_file = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/Cb.mat'
+    class_tuple = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
+    #class_tuple = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M')
+    img_name = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/192.jpg'
+    box_file = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/192.mat'
     str = demo(net, img_name, box_file, '/home/jiayuan/Documents/download_code/fast-rcnn/result.jpg',class_tuple)
     print 'result={}'.format(str)
