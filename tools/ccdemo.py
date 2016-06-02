@@ -131,7 +131,7 @@ if __name__ == '__main__':
     net = caffe.Net(prototxt, caffemodel, caffe.TEST)
     #class_tuple = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
     class_tuple = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M')
-    img_name = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/Cb.jpg'
-    box_file = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/Cb.mat'
+    img_name = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/Cb1.jpg'
+    box_file = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/Cb1.mat'
     str = demo(net, img_name, box_file, '/home/jiayuan/Documents/download_code/fast-rcnn/result.jpg',class_tuple)
     print 'result={}'.format(str)
