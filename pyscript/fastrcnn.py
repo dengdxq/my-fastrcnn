@@ -28,6 +28,7 @@ from skimage import io
 import scipy.io as scio
 import math
 import logging
+import _init_config
 
 
 CLASSES = ('__background__','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
@@ -37,7 +38,7 @@ def get_detection_box(class_name, dets, thresh=0.5):
     inds = np.where(dets[:, -1] >= thresh)[0]
     if len(inds) == 0:
         return []
-    charbox_list = [];
+    charbox_list = []
     for i in inds:
         bbox = dets[i, :4]
         if math.isnan(bbox[0]) or math.isnan(bbox[1]) or math.isnan(bbox[2]) or math.isnan(bbox[3]):
@@ -55,20 +56,20 @@ def get_detection_box(class_name, dets, thresh=0.5):
 
 
 
-def recognize_img(net, image_name, boxes, out_img, classes):
+def recognize_img(net, image_name, boxes, classes):
     # Load the demo image
     im = cv2.imread(image_name)
     # Detect all object classes and regress object bounds
     scores, boxes = im_detect(net, im, boxes)
     #print type(boxes)
-    dims = boxes.shape
-    rows = dims[0]
-    cols = dims[1]
+    #dims = boxes.shape
+    #rows = dims[0]
+    #cols = dims[1]
 
     # Visualize detections for each class
     CONF_THRESH = 0.85
     NMS_THRESH = 0.3
-    data_list = [];
+    data_list = []
     for cls in classes:    	
         cls_ind = CLASSES.index(cls)
         cls_boxes = boxes[:, 4*cls_ind:4*(cls_ind + 1)]
@@ -132,5 +133,5 @@ if __name__ == '__main__':
     box_file = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/Cb2.mat'
     save_path = '/home/jiayuan/Documents/download_code/fast-rcnn/result.jpg'
     boxes = get_selective_search_boxes(img_name)
-    str = recognize_img(net, img_name, boxes, save_path, class_tuple)
+    str = recognize_img(net, img_name, boxes, class_tuple)
     print 'result={}'.format(str)
