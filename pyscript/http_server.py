@@ -11,12 +11,12 @@ import random
 
 def parse_url(request_str):
     if len(request_str)==0:
-        return ''
+        return '' 
     strs = request_str.split('\n')
     url = ""
     length = len(strs)
     for i in range(length):
-        if strs[i].find("Referer") >=0:
+        if strs[i].find("GET") >=0:
             url = strs[i].split(' ')[1]
             break
     return url
@@ -27,8 +27,6 @@ def parse_params(url_str):
      url_params = url_str.strip('\r\n').split('?')
      params = {}
      strs = url_params[1].split('&')
-     print '------'
-     print strs
      length = len(strs)
      for i in range(length):
          param = strs[i].split('=')
@@ -56,8 +54,9 @@ def create_imgname():
     timestamp = time.time()
     stimestamp = str(timestamp)
     stimestamp = stimestamp.replace('.', '_')
-    name1 = random.sample(alpha_list, 6)
-    fname = _init_config.img_save_dir+'/'+stimestamp+'_'+name1
+    name = random.sample(alpha_list, 6)
+    name = ''.join(name)
+    fname = stimestamp+'_'+name
     return fname
 
 def http_server():
@@ -68,22 +67,25 @@ def http_server():
     listen_socket.listen(1)
     #fast rcnn info
     class_tuple = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
-    net = fastrcnn.load_caffe_net(_init_config.prototxt, _init_config.caffemodel, 0)
-
+    net = fastrcnn.load_caffe_net(_init_config.prototxt, _init_config.caffemodel, 1)
+    print '------------------------------------------------------------------------------'
     #
     print 'Serving HTTP on port %s ...' % PORT
     while True:
         client_connection, client_address = listen_socket.accept()
-        request = client_connection.recv(1024)
-        url = parse_url(request.strip('\r\n'))
+        request = client_connection.recv(1024*3)
+        url = parse_url(request)
         params = parse_params(url)
+        print params
         if len(params) != 0:
-            print params
-            savepath = _init_config.img_save_dir + '/' + create_imgname()
+            #print params            
+            savepath = _init_config.img_save_dir + '/' + create_imgname() +'_' +params['type']+'.jpg'
             save_img(savepath, params['data'])
-            boxes = fastrcnn.get_selective_search_boxes('')
+            
+            boxes = fastrcnn.get_selective_search_boxes(savepath)
             str = fastrcnn.recognize_img(net, savepath, boxes, class_tuple)
             print "The result = %s"%(str)
+            
         #http_response = """HTTP/1.1 200 OKHello, World!"""
         http_response = """
         HTTP/1.1 200 OK
@@ -94,8 +96,8 @@ def http_server():
         client_connection.close()
 
 if __name__=='__main__':
-    #http_server()
-    create_imgname()
+    http_server()
+    #print create_imgname()
     '''
     HOST, PORT = '', 8888
     listen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
