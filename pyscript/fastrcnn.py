@@ -91,6 +91,36 @@ def recognize_img(net, image_name, boxes, classes):
     return str
 
 
+def recognize_checkcode_img(net, image_name, classes):
+    boxes = get_selective_search_boxes(image_name)
+    if boxes == None:
+        return None
+    im = cv2.imread(image_name)
+    scores, boxes = im_detect(net, im, boxes)
+    CONF_THRESH = 0.85
+    NMS_THRESH = 0.3
+    data_list = []
+    for cls in classes:
+        cls_ind = CLASSES.index(cls)
+        cls_boxes = boxes[:, 4*cls_ind:4*(cls_ind + 1)]
+        cls_scores = scores[:, cls_ind]
+        keep = np.where(cls_scores >= CONF_THRESH)[0]
+        cls_boxes = cls_boxes[keep, :]
+        cls_scores = cls_scores[keep]
+        dets = np.hstack((cls_boxes, cls_scores[:, np.newaxis])).astype(np.float32)
+        keep = nms(dets, NMS_THRESH)
+        dets = dets[keep, :]
+        tmplist = get_detection_box(cls, dets, thresh=CONF_THRESH)
+        if len(tmplist) == 0:
+            continue
+        data_list.extend(tmplist)
+    data_list.sort(key=lambda obj:obj.get('xoffset'), reverse=False)
+    str = ''
+    for elem in data_list:
+        str = str + elem.get('char')
+    return str
+
+
 def load_caffe_net(prototxt, caffemodel, issetgpu):
     if issetgpu==1:
         caffe.set_mode_gpu()
@@ -113,6 +143,8 @@ def get_selective_search_boxes(imgpath):
     for key,value in enumerate(rects):
         elem = [value.left()+1, value.top()+1, value.right()+1, value.bottom()+1]
         boxes.append(elem)
+    if len(boxes) == 0:
+        return None
     boxes = np.array(boxes)
     return boxes
 
