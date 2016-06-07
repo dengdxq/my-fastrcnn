@@ -13,7 +13,7 @@ img_max_num = 5000
 ############################
 #LOG
 ############################
-log_file = '/home/jiayuan/Documents/fastrcnn/log'
+log_file = '/home/jiayuan/Documents/fastrcnn/logs'
 log_file_size = 104857600 #100M=1024*1024*100
 log_file_name = 'checkcode.log'
 log_file_max_num = 50

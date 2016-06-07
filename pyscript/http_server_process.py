@@ -19,25 +19,30 @@ class HttpHandle(BaseHTTPRequestHandler):
     cc_value = ''
     response_str = ''
     logger = logging.getLogger('HttpHandle')
+    caffe_net = fastrcnn.load_caffe_net(_init_config.prototxt, _init_config.caffemodel, 1)
 
     def do_GET(self):
         self.logger.info('GET Params[src]:%s'%(self.path))
         parsed_path = urlparse.urlparse(self.path)
-        self.parse_params(parsed_path.query)
+        self.urlparam_str = parsed_path.query
+        self.urlparam_dict = self.parse_params()
         self.logger.info('GET Params[parse]:%s'%(json.dumps(self.urlparam_dict)))
-        self.cc_value = fastrcnn.recognize_checkcode_img(self.caffe_net, '', self.class_tuple)
-        if self.cc_value == None:
-            self.cc_value = '{}'
-        self.create_response()
-        self.logger.info('RETURN String:%s'%(self.response_str))
-        self.wfile.write(self.response_str)
         #---save image---
         file_num = self.get_file_number_in_dir(_init_config.img_save_dir)
         if file_num==_init_config.img_max_num:
             self.make_dir(_init_config.img_save_dir)
-        savepath = _init_config.img_save_dir + '/' + self.get_image_name() +'_' +self.urlparam_dict['type']+'_'+self.cc_value+'.jpg'
-        self.logger.info('SAVE Image:%s'%(savepath))
+        savepath = _init_config.img_save_dir + '/' + self.get_image_name() +'_' +self.urlparam_dict['type']+'.jpg'
+        self.logger.info('SAVE Image:%s'%(savepath))        
         self.save_image(savepath)
+        #---recognize---
+        self.cc_value = fastrcnn.recognize_checkcode_img(self.caffe_net, savepath, self.class_tuple)
+        if self.cc_value == None:
+            self.cc_value = '{}'
+        self.logger.info('RECOGNIZE Result:%s<=>%s'%(savepath, self.cc_value))
+        self.create_response()
+        self.logger.info('RETURN String:%s'%(self.response_str))
+        self.wfile.write(self.response_str)
+        
 
     def parse_params(self):
         dict = {}
