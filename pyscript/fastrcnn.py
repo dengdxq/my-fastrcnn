@@ -29,6 +29,7 @@ import scipy.io as scio
 import math
 import logging
 import _init_config
+import logconfig
 
 
 CLASSES = ('__background__','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
@@ -118,6 +119,9 @@ def recognize_checkcode_img(net, image_name, classes):
     str = ''
     for elem in data_list:
         str = str + elem.get('char')
+    print data_list
+    print str
+    print '-=-=-=-='
     return str
 
 
