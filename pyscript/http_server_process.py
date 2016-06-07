@@ -8,6 +8,7 @@ import random
 import base64
 import logging
 from urllib import unquote
+import os
 
 
 class HttpHandle(BaseHTTPRequestHandler):
@@ -31,6 +32,9 @@ class HttpHandle(BaseHTTPRequestHandler):
         self.logger.info('RETURN String:%s'%(self.response_str))
         self.wfile.write(self.response_str)
         #---save image---
+        file_num = self.get_file_number_in_dir(_init_config.img_save_dir)
+        if file_num==_init_config.img_max_num:
+            self.make_dir(_init_config.img_save_dir)
         savepath = _init_config.img_save_dir + '/' + self.get_image_name() +'_' +self.urlparam_dict['type']+'_'+self.cc_value+'.jpg'
         self.logger.info('SAVE Image:%s'%(savepath))
         self.save_image(savepath)
@@ -73,6 +77,33 @@ class HttpHandle(BaseHTTPRequestHandler):
         name = ''.join(name)
         fname = stimestamp+'_'+name
         return fname
+
+    def get_dir_name(self):
+        timestamp = time.time()
+        stimestamp = str(timestamp)
+        strs = stimestamp.split('.')
+        return strs[0]
+
+    def get_file_number_in_dir(self, path):
+        count = 0
+        for root,dirs,files in os.walk(path):
+            count += len(files)
+        return count
+
+    def make_dir(self, path):
+        dname = self.get_dir_name()
+        while True:
+            if os.path.exists(path+'/'+dname)==False:
+                break
+            dname = self.get_dir_name()
+
+    def get_file_list(self, path):
+        filelist = []
+        for root,dirs,files in os.walk(path):
+            filelist.extend(files)
+        return filelist
+
+
 
 def start_server(url, port):
     http_server = HTTPServer((url, int(port)), HttpHandle)

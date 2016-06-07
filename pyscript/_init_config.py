@@ -9,6 +9,7 @@ caffemodel = '/home/jiayuan/Documents/download_code/fast-rcnn/data/fast_rcnn_mod
 #IMAGE
 ############################
 img_save_dir = '/home/jiayuan/Documents/fastrcnn/images'
+img_max_num = 5000
 ############################
 #LOG
 ############################
