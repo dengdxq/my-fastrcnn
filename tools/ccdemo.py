@@ -111,8 +111,8 @@ def demo(net, image_name, box_file, out_img, classes):
         if len(tmplist) == 0:
             continue
         data_list.extend(tmplist)
-    print data_list
-    print '====================='
+    #print data_list
+    #print '====================='
     plt.savefig(out_img)
     data_list.sort(key=lambda obj:obj.get('xoffset'), reverse=False)
     str = ''
@@ -123,15 +123,15 @@ def demo(net, image_name, box_file, out_img, classes):
 
 if __name__ == '__main__':
     
-    prototxt = '/home/jiayuan/Documents/download_code/fast-rcnn/models/checkcode/test.prototxt'
-    caffemodel = '/home/jiayuan/Documents/download_code/fast-rcnn/data/fast_rcnn_models/checkcode_fast_rcnn_iter_200000.caffemodel'
-    caffe.set_mode_cpu()
-    #caffe.set_mode_gpu()
-    #caffe.set_device(0)
+    prototxt = '/data/code/my-fastrcnn/models/checkcode_vgg16/test.prototxt'
+    caffemodel = '/data/code/my-fastrcnn/output/default/train/checkcode_vgg16_fast_rcnn_iter_110000.caffemodel'
+    #caffe.set_mode_cpu()
+    caffe.set_mode_gpu()
+    caffe.set_device(0)
     net = caffe.Net(prototxt, caffemodel, caffe.TEST)
     class_tuple = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
     #class_tuple = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M')
-    img_name = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/Cb1.jpg'
-    box_file = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/Cb2.mat'
-    str = demo(net, img_name, box_file, '/home/jiayuan/Documents/download_code/fast-rcnn/result.jpg',class_tuple)
+    img_name = '/data/code/my-fastrcnn/data/demo/4WrDHzdMKeCQ1Ilqi0Gi766ltn1byreH9fs7gLlQRq4yT4mkFBt.jpg'
+    box_file = '/data/code/my-fastrcnn/data/demo/4WrDHzdMKeCQ1Ilqi0Gi766ltn1byreH9fs7gLlQRq4yT4mkFBt.mat'
+    str = demo(net, img_name, box_file, '/data/code/my-fastrcnn/result.jpg',class_tuple)
     print 'result={}'.format(str)

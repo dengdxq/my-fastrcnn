@@ -40,7 +40,7 @@ for top_k in np.arange(1000, 11000, 1000):
                     _selective_search_IJCV_top_k(split, year, top_k))
 
 # Set up kaggle_<split> using selective search "fast" mode
-kaggle_devkit_path = '/home/jiayuan/Documents/checkcode'  #modify
+kaggle_devkit_path = '/data/Images/checkcode'  #modify
 for split in ['train', 'test']:
     name = '{}_{}'.format('checkcode', split) #modify
     __sets[name] = (lambda split=split: datasets.checkcode(split, kaggle_devkit_path)) #modify
