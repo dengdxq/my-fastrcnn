@@ -9,7 +9,8 @@ import base64
 import logging
 from urllib import unquote
 import os
-
+from SocketServer import ThreadingMixIn
+import threading
 
 class HttpHandle(BaseHTTPRequestHandler):
     urlparam_str = ''
@@ -22,6 +23,8 @@ class HttpHandle(BaseHTTPRequestHandler):
     caffe_net = fastrcnn.load_caffe_net(_init_config.prototxt, _init_config.caffemodel, 1)
 
     def do_GET(self):
+        thread_name = threading.currentThread().getName()
+        self.logger.info('[Start]Thread name:%s'%(thread_name))
         #self.logger.info('GET Params[src]:%s'%(self.path))
         if len(self.path) < 10:
             self.logger.info('The Params of Get is null')
@@ -48,7 +51,7 @@ class HttpHandle(BaseHTTPRequestHandler):
         self.create_response()
         self.logger.info('TID:%s; RETURN String:%s'%(self.urlparam_dict['tid'], self.response_str))
         self.wfile.write(self.response_str)
-        #self.wfile.write('asfasfaf')
+        self.logger.info('[End]Thread name:%s'%(thread_name))
         
 
     def parse_params(self):
@@ -124,5 +127,16 @@ def start_server(url, port):
     http_server.serve_forever()
 
 
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    pass
+
+def start_server_thread(url, port):
+    server = ThreadedHTTPServer((url, int(port)), HttpHandle)
+    server.serve_forever()
+
+
 if __name__ == '__main__':
-    start_server('127.0.0.1', '8180')
+    #start_server('127.0.0.1', '8180')
+    start_server_thread('127.0.0.1', '8180')
+
+
