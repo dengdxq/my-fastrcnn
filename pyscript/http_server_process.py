@@ -22,7 +22,10 @@ class HttpHandle(BaseHTTPRequestHandler):
     caffe_net = fastrcnn.load_caffe_net(_init_config.prototxt, _init_config.caffemodel, 1)
 
     def do_GET(self):
-        self.logger.info('GET Params[src]:%s'%(self.path))
+        #self.logger.info('GET Params[src]:%s'%(self.path))
+        if len(self.path) < 10:
+            self.logger.info('The Params of Get is null')
+            return
         parsed_path = urlparse.urlparse(self.path)
         self.urlparam_str = parsed_path.query
         self.urlparam_dict = self.parse_params()
@@ -32,16 +35,20 @@ class HttpHandle(BaseHTTPRequestHandler):
         if file_num==_init_config.img_max_num:
             self.make_dir(_init_config.img_save_dir)
         savepath = _init_config.img_save_dir + '/' + self.get_image_name() +'_' +self.urlparam_dict['type']+'.jpg'
-        self.logger.info('SAVE Image:%s'%(savepath))        
+        self.logger.info('TID:%s; SAVE Image:%s'%(self.urlparam_dict['tid'], savepath))        
         self.save_image(savepath)
         #---recognize---
+        start_time = time.time()
         self.cc_value = fastrcnn.recognize_checkcode_img(self.caffe_net, savepath, self.class_tuple)
+        end_time = time.time()
+        self.logger.info('TID:%s; recognize_checkcode_img take:%s sec'%(self.urlparam_dict['tid'], str(end_time-start_time)))
         if self.cc_value == None:
             self.cc_value = '{}'
-        self.logger.info('RECOGNIZE Result:%s<=>%s'%(savepath, self.cc_value))
+        self.logger.info('TID:%s; RECOGNIZE Result:%s<=>%s'%(self.urlparam_dict['tid'], savepath, self.cc_value))
         self.create_response()
-        self.logger.info('RETURN String:%s'%(self.response_str))
+        self.logger.info('TID:%s; RETURN String:%s'%(self.urlparam_dict['tid'], self.response_str))
         self.wfile.write(self.response_str)
+        #self.wfile.write('asfasfaf')
         
 
     def parse_params(self):
@@ -66,10 +73,12 @@ class HttpHandle(BaseHTTPRequestHandler):
 
     def save_image(self, savepath):
         base64str = self.urlparam_dict['data']
-        str = unquote(base64str)
-        str = base64.b64decode(str)
-        file=open(savepath, 'wb')
-        file.write(str)
+        string = unquote(base64str)
+        string = base64.b64decode(string)
+        file = open(savepath, 'wb')
+        file.write(string)
+        #print 'img size = %d'%(len(string))
+        #print string
         file.close()
 
     def get_image_name(self):
@@ -116,4 +125,4 @@ def start_server(url, port):
 
 
 if __name__ == '__main__':
-    start_server('127.0.0.1', '8080')
+    start_server('127.0.0.1', '8180')

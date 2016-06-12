@@ -199,11 +199,11 @@ def im_detect(net, im, boxes):
     net.blobs['rois'].reshape(*(blobs['rois'].shape))
     blobs_out = net.forward(data=blobs['data'].astype(np.float32, copy=False),
                             rois=blobs['rois'].astype(np.float32, copy=False))
-    print type(blobs_out['bbox_pred_checkcode'])
-    file = open('/home/jiayuan/Documents/download_code/fast-rcnn/aaa.txt', 'w')
-    for elem in blobs['data'].flat:
-        file.write(str(elem)+'\n')
-    file.close()
+    #print type(blobs_out['bbox_pred_checkcode'])
+    #file = open('/home/jiayuan/Documents/download_code/fast-rcnn/aaa.txt', 'w')
+    #for elem in blobs['data'].flat:
+    #    file.write(str(elem)+'\n')
+    #file.close()
     if cfg.TEST.SVM:
         # use the raw scores before softmax under the assumption they
         # were trained as linear SVMs
