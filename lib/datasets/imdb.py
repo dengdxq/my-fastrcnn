@@ -108,7 +108,7 @@ class imdb(object):
             '''
             boxes[:, 0] = widths[i] - oldx2 - 1
             boxes[:, 2] = widths[i] - oldx1 - 1
-            print 'num=%d'%i 
+            #print 'num=%d'%i 
             #add
             for b in range(len(boxes)):
                 if boxes[b][2] < boxes[b][0]:
@@ -215,7 +215,7 @@ class imdb(object):
                                                   dtype=np.int32),
                           'gt_overlaps' : overlaps,
                           'flipped' : False})
-        print 'roidb size = %d'%(len(roidb))
+        #print 'roidb size = %d'%(len(roidb))
         return roidb
 
     @staticmethod

@@ -57,11 +57,12 @@ def get_detection_box(class_name, dets, thresh=0.5):
 
 
 
-def recognize_img(net, image_name, boxes, classes):
+def recognize_img(net, image_name, box_file, classes):
+    obj_proposals = sio.loadmat(box_file)['boxes']
     # Load the demo image
     im = cv2.imread(image_name)
     # Detect all object classes and regress object bounds
-    scores, boxes = im_detect(net, im, boxes)
+    scores, boxes = im_detect(net, im, obj_proposals)
     #print type(boxes)
     #dims = boxes.shape
     #rows = dims[0]
@@ -119,9 +120,9 @@ def recognize_checkcode_img(net, image_name, classes):
     str = ''
     for elem in data_list:
         str = str + elem.get('char')
-    print data_list
-    print str
-    print '-=-=-=-='
+    #print data_list
+    #print str
+    #print '-=-=-=-='
     return str
 
 

@@ -62,7 +62,7 @@ class ImageSender(threading.Thread):
         param = {'tid':'2342sdfdsg_'+str(self.thread_num), 'type':'TEST', 'data': imgdata}
         r = requests.get(url, params=param)
         #r = requests.get('http://127.0.0.1:8180/checkcode?tid=asdfasdff&type=CCCCC&data='+imgdata)
-        print '=-===================='
+        print '====================='
         #print r.url
         print 'url = %s'%(r.text)
 

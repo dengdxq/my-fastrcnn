@@ -233,10 +233,10 @@ class checkcode(datasets.imdb):
             #print get_data_from_tag(obj, "name")
 
 			# cls = self._class_to_ind['whale']
-            cls = self._class_to_ind[
-                str(get_data_from_tag(obj, "name")).lower().strip()]
             #cls = self._class_to_ind[
-            #    str(get_data_from_tag(obj, "name")).strip()]
+            #    str(get_data_from_tag(obj, "name")).lower().strip()]
+            cls = self._class_to_ind[
+                str(get_data_from_tag(obj, "name")).strip()]
             boxes[ix, :] = [x1, y1, x2, y2]
             gt_classes[ix] = cls
             overlaps[ix, cls] = 1.0

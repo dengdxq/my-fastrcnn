@@ -131,7 +131,7 @@ def _bbox_pred(boxes, box_deltas):
     pred_ctr_y = dy * heights[:, np.newaxis] + ctr_y[:, np.newaxis]
     pred_w = np.exp(dw) * widths[:, np.newaxis]
     pred_h = np.exp(dh) * heights[:, np.newaxis]
-    print dw
+    #print dw
     #for elem in pred_ctr_x.flat:
     #    if math.isnan(elem):
     #        print 'xxxxxx'
@@ -142,7 +142,7 @@ def _bbox_pred(boxes, box_deltas):
     
 
     pred_boxes = np.zeros(box_deltas.shape)
-    print box_deltas.shape
+    #print box_deltas.shape
     # x1
     pred_boxes[:, 0::4] = pred_ctr_x - 0.5 * pred_w
     #print pred_boxes[:, 0::4]

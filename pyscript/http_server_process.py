@@ -1,4 +1,5 @@
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+from SocketServer import ThreadingMixIn
 import urlparse
 import fastrcnn
 import _init_config
@@ -7,9 +8,8 @@ import time
 import random
 import base64
 import logging
-from urllib import unquote
 import os
-from SocketServer import ThreadingMixIn
+from urllib import unquote
 import threading
 
 class HttpHandle(BaseHTTPRequestHandler):
@@ -21,9 +21,12 @@ class HttpHandle(BaseHTTPRequestHandler):
     response_str = ''
     logger = logging.getLogger('HttpHandle')
     caffe_net = fastrcnn.load_caffe_net(_init_config.prototxt, _init_config.caffemodel, 1)
-
+    print 'load_caffe_net===================================='
     def do_GET(self):
         thread_name = threading.currentThread().getName()
+        thnum = threading.activeCount()
+        print 'thread num = %d'%(thnum)
+        print thread_name
         self.logger.info('[Start]Thread name:%s'%(thread_name))
         #self.logger.info('GET Params[src]:%s'%(self.path))
         if len(self.path) < 10:
@@ -131,6 +134,7 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     pass
 
 def start_server_thread(url, port):
+    caffe_net = fastrcnn.load_caffe_net(_init_config.prototxt, _init_config.caffemodel, 1)
     server = ThreadedHTTPServer((url, int(port)), HttpHandle)
     server.serve_forever()
 
