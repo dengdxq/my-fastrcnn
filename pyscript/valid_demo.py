@@ -6,8 +6,8 @@ import time
 #并且比较了matlab版的ss和dlib的ss之间的效果
 
 
-IMAGE_DIR = ''
-SSBOX_DIR = ''
+IMAGE_DIR = '/data/Images/checkcode/data/Images'
+SSBOX_DIR = '/data/Images/checkcode/data/ssbox'
 CAFFE_NET = None
 CLASS_TUPLE = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
 
@@ -51,6 +51,8 @@ def load_annotation_file(filename):
             cnt3 += 1
         if flg4 == 0:
             cnt4 += 1
+	if flg4 != 0:
+            print '%s != %s'%(ccvalue1,ccvalue2)
     result_dict = {}
     result_dict['total'] = cnt
     result_dict['ss_mat'] = cnt1
@@ -86,11 +88,12 @@ def get_pure_filename(filename):
 
 if __name__ == '__main__': #53.4-979082-6230 ##1128253 = 149171  6575
     prototxt = '/data/code/my-fastrcnn/models/checkcode_vgg16/test.prototxt'
-    caffemodel = '/data/code/my-fastrcnn/output/default/train/checkcode_vgg16_fast_rcnn_iter_10000.caffemodel'
+    caffemodel = '/data/code/my-fastrcnn/output/default/train/checkcode_vgg16_fast_rcnn_iter_180000.caffemodel'
     load_caffe_net(prototxt, caffemodel)
-    imglist = ''
+    imglist = '/data/Images/checkcode/imglist.txt'
     res = load_annotation_file(imglist)
+    print res
     print 'Total image number is: %d'%(res['total'])
-    print 'The accuracy of matlab ss is: %f'%(res['ss_mat']/res['total'])
-    print 'The accuracy of dlib ss is: %f'%(res['ss_dlib']/res['total'])
+    print 'The accuracy of matlab ss is: %f'%(1.0*res['ss_mat']/res['total'])
+    print 'The accuracy of dlib ss is: %f'%(1.0*res['ss_dlib']/res['total'])
     print 'The recognize result of matlab and dlib is %d'%(res['mat_dlib'])

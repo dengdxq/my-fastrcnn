@@ -217,10 +217,9 @@ def im_detect(net, im, boxes):
         box_deltas = blobs_out['bbox_pred_checkcode']
 
         pred_boxes = _bbox_pred(boxes, box_deltas)
-        print type(pred_boxes)
+        #print type(pred_boxes)
         #for elem in pred_boxes:
         #    print elem
-        print 'fun-=-=-=-=-=-===fun'
         pred_boxes = _clip_boxes(pred_boxes, im.shape)
     else:
         # Simply repeat the boxes, once for each class
