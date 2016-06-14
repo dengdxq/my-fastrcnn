@@ -77,7 +77,7 @@ def get_checkcode_value_dlib(imagename):
     global CLASS_TUPLE
     global IMAGE_DIR
     imgpath = IMAGE_DIR + '/' + imagename
-    str = fastrcnn.recognize_checkcode_img(CAFFE_NET, imgpath, CLASS_TUPLE)
+    str = fastrcnn.recognize_checkcode_img(CAFFE_NET, imgpath, CLASS_TUPLE)['ccvalue']
     return str
 
 def get_pure_filename(filename):

@@ -123,7 +123,10 @@ def recognize_checkcode_img(net, image_name, classes):
     #print data_list
     #print str
     #print '-=-=-=-='
-    return str
+    dict = {}
+    dict['ccvalue'] = str
+    dict['rects'] = data_list
+    return dict
 
 
 def load_caffe_net(prototxt, caffemodel, issetgpu):

@@ -45,7 +45,7 @@ class HttpHandle(BaseHTTPRequestHandler):
         self.save_image(savepath)
         #---recognize---
         start_time = time.time()
-        self.cc_value = fastrcnn.recognize_checkcode_img(self.caffe_net, savepath, self.class_tuple)
+        self.cc_value = fastrcnn.recognize_checkcode_img(self.caffe_net, savepath, self.class_tuple)['ccvalue']
         end_time = time.time()
         self.logger.info('TID:%s; recognize_checkcode_img take:%s sec'%(self.urlparam_dict['tid'], str(end_time-start_time)))
         if self.cc_value == None:
