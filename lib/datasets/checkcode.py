@@ -194,6 +194,7 @@ class checkcode(datasets.imdb):
         Load image and bounding boxes info from txt files of Right Whale Challenge.
         """
         filename = os.path.join(self._data_path, 'Annotations', index + '.xml')
+        #print filename
         #print index
         #print '==============='
         # print 'Loading: {}'.format(filename)
