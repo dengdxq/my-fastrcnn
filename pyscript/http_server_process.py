@@ -21,7 +21,7 @@ class HttpHandle(BaseHTTPRequestHandler):
     response_str = ''
     logger = logging.getLogger('HttpHandle')
     caffe_net = fastrcnn.load_caffe_net(_init_config.prototxt, _init_config.caffemodel, 1)
-    print 'load_caffe_net===================================='
+    print '============load_caffe_net===================='
     def do_GET(self):
         thread_name = threading.currentThread().getName()
         thnum = threading.activeCount()

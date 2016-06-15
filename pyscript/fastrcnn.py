@@ -1,3 +1,4 @@
+#-*- coding:utf-8 –*-
 #!/usr/bin/env python
 
 # --------------------------------------------------------
@@ -42,6 +43,7 @@ def get_detection_box(class_name, dets, thresh=0.5):
     charbox_list = []
     for i in inds:
         bbox = dets[i, :4]
+        score = dets[i,4]
         if math.isnan(bbox[0]) or math.isnan(bbox[1]) or math.isnan(bbox[2]) or math.isnan(bbox[3]):
             return []
         xmin = int(bbox[0])
@@ -52,7 +54,7 @@ def get_detection_box(class_name, dets, thresh=0.5):
             xmax = 159
         if ymax==60:
             ymax = 59
-        charbox_list.append({'char':class_name, 'xoffset':bbox[0], 'xmin':xmin, 'ymin':ymin, 'xmax':xmax, 'ymax':ymax});
+        charbox_list.append({'char':class_name, 'xoffset':bbox[0], 'xmin':xmin, 'ymin':ymin, 'xmax':xmax, 'ymax':ymax, 'score':score});
     return charbox_list
 
 
@@ -87,6 +89,7 @@ def recognize_img(net, image_name, box_file, classes):
             continue
         data_list.extend(tmplist)
     data_list.sort(key=lambda obj:obj.get('xoffset'), reverse=False)
+    data_list = char_roi_filter(data_list)
     str = ''
     for elem in data_list:
         str = str + elem.get('char')
@@ -117,6 +120,7 @@ def recognize_checkcode_img(net, image_name, classes):
             continue
         data_list.extend(tmplist)
     data_list.sort(key=lambda obj:obj.get('xoffset'), reverse=False)
+    data_list = char_roi_filter(data_list)
     str = ''
     for elem in data_list:
         str = str + elem.get('char')
@@ -156,6 +160,34 @@ def get_selective_search_boxes(imgpath):
     boxes = np.array(boxes)
     return boxes
 
+
+
+#计算两个rect之间的重叠面积
+def calc_rect_overlap(rectelem1, rectelem2):
+    width = rectelem1['xmax'] - rectelem2['xmin']
+    height = rectelem1['ymax'] - rectelem2['ymin']
+    if width<=0 or height<=0:
+        return 0
+    rect1_w = rectelem1['xmax'] - rectelem1['xmin']
+    rect1_h = rectelem1['ymax'] - rectelem1['ymin']
+    return (1.0*height*width/(rect1_w*rect1_h))
+
+#筛选rect
+def char_roi_filter(rectlist):
+    n = len(rectlist)
+    datalist = []
+    for idx in range(0,n-1):
+        area = calc_rect_overlap(rectlist[idx], rectlist[idx+1])
+        datalist.append(rectlist[idx])
+        if area < 0.5:
+            continue
+        score1 = rectlist[idx]['score']
+        score2 = rectlist[idx+1]['score']
+        if score1>score2:
+            datalist.append(rectlist[idx])
+        else :
+            datalist.append(rectlist[idx+1])
+    return datalist
 
 if __name__ == '__main__':
     
