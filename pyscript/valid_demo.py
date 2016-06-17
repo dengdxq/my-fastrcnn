@@ -88,7 +88,7 @@ def get_pure_filename(filename):
 
 if __name__ == '__main__': #53.4-979082-6230 ##1128253 = 149171  6575
     prototxt = '/data/code/my-fastrcnn/models/checkcode_vgg16/test.prototxt'
-    caffemodel = '/data/code/my-fastrcnn/output/default/train/checkcode_vgg16_fast_rcnn_iter_180000.caffemodel'
+    caffemodel = '/data/code/my-fastrcnn/output/default/train_1w-10w_999zhang/checkcode_vgg16_fast_rcnn_iter_100000.caffemodel'
     load_caffe_net(prototxt, caffemodel)
     imglist = '/data/Images/checkcode/imglist.txt'
     res = load_annotation_file(imglist)

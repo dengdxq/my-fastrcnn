@@ -89,7 +89,7 @@ def recognize_img(net, image_name, box_file, classes):
             continue
         data_list.extend(tmplist)
     data_list.sort(key=lambda obj:obj.get('xoffset'), reverse=False)
-    data_list = char_roi_filter(data_list)
+    #data_list = char_roi_filter(data_list)
     str = ''
     for elem in data_list:
         str = str + elem.get('char')
@@ -120,7 +120,14 @@ def recognize_checkcode_img(net, image_name, classes):
             continue
         data_list.extend(tmplist)
     data_list.sort(key=lambda obj:obj.get('xoffset'), reverse=False)
-    data_list = char_roi_filter(data_list)
+    #print 'len1 = %d'%(len(data_list))
+    #str = ''
+    #for elem in data_list:
+    #    str = str + elem.get('char')
+    #print str
+    #data_list = char_roi_filter(data_list)
+    #print 'len2 = %d'%(len(data_list))
+    #print data_list
     str = ''
     for elem in data_list:
         str = str + elem.get('char')
@@ -176,34 +183,37 @@ def calc_rect_overlap(rectelem1, rectelem2):
 def char_roi_filter(rectlist):
     n = len(rectlist)
     datalist = []
-    for idx in range(0,n-1):
-        area = calc_rect_overlap(rectlist[idx], rectlist[idx+1])
-        datalist.append(rectlist[idx])
+    idx1 = 0
+    idx2 = 0
+    while True:
+        if idx1 >= n:
+            break
+        elif idx1 == n-1:
+            datalist.append(rectlist[idx1])
+            break
+        idx2 = idx1 + 1
+        #print '%d---%d'%(idx1,idx2)
+        area = calc_rect_overlap(rectlist[idx1], rectlist[idx2])      
+        #print area  
         if area < 0.5:
+            datalist.append(rectlist[idx1])
+            idx1 += 1
             continue
-        score1 = rectlist[idx]['score']
-        score2 = rectlist[idx+1]['score']
+        score1 = rectlist[idx1]['score']
+        score2 = rectlist[idx2]['score']
         if score1>score2:
-            datalist.append(rectlist[idx])
+            datalist.append(rectlist[idx1])
         else :
-            datalist.append(rectlist[idx+1])
+            datalist.append(rectlist[idx2])
+        idx1 += 2
     return datalist
 
 if __name__ == '__main__':
+    prototxt = '/data/code/my-fastrcnn/models/checkcode_vgg16/test.prototxt'
+    caffemodel = '/data/code/my-fastrcnn/output/default/train_1w-10w_999zhang/checkcode_vgg16_fast_rcnn_iter_100000.caffemodel'
+    imgpath = '/data/Images/checkcode/data/Images/V66wPn0abMUQcGfqOvg4AMU0vynYwNtLdYbha2v2yCi3q4xzfQk.jpg'
+    CLASS_TUPLE = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
+    CAFFE_NET = load_caffe_net(prototxt, caffemodel, 1)
+    str = recognize_checkcode_img(CAFFE_NET, imgpath, CLASS_TUPLE)
+    print str
     
-    prototxt = '/home/jiayuan/Documents/download_code/fast-rcnn/models/checkcode/test.prototxt'
-    caffemodel = '/home/jiayuan/Documents/download_code/fast-rcnn/data/fast_rcnn_models/checkcode_fast_rcnn_iter_200000.caffemodel'
-    #caffe.set_mode_cpu()
-    #caffe.set_mode_gpu()
-    #caffe.set_device(0)
-    #net = caffe.Net(prototxt, caffemodel, caffe.TEST)
-    #---
-    net = load_caffe_net(prototxt, caffemodel, 0)
-
-    class_tuple = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
-    img_name = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/Cb1.jpg'
-    box_file = '/home/jiayuan/Documents/download_code/fast-rcnn/data/demo/Cb2.mat'
-    save_path = '/home/jiayuan/Documents/download_code/fast-rcnn/result.jpg'
-    boxes = get_selective_search_boxes(img_name)
-    str = recognize_img(net, img_name, boxes, class_tuple)
-    print 'result={}'.format(str)
