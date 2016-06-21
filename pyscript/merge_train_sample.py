@@ -26,23 +26,25 @@ def get_random_string(length):
         return name
 
 def copy_imagefiles(srcdir, name, dstdir):
-    if os.path.exists(srcdir+'/'+name) == False:
+    #print '(%s)(%s)(%s)'%(srcdir+'/'+name,name,dstdir+'/'+name)
+    if os.path.exists(dstdir+'/'+name) == False:        
         shutil.copyfile(srcdir+'/'+name, dstdir+'/'+name)
         return name
     newname = get_random_string(9)+'_'+name
+    shutil.copyfile(srcdir+'/'+name, dstdir+'/'+newname)
     return newname
 
 
 def merge_train_images(rootdir, dirlist, dstdir):
-    pfile = open(dstdir+'/imglist.txt')
+    pfile = open(dstdir+'/imglist.txt', 'w')
     for elem in dirlist:
         imgdir = rootdir+'/'+elem
         textlist = get_file_content_by_line(imgdir+'/'+'imglist.txt')
         for text in textlist:
-            strs = text.split(' ')
+            strs = text.strip('\n').split(' ')
             fname = copy_imagefiles(imgdir, strs[0], dstdir+'/Images')
             if cmp(fname, strs[0]) == 0:
-                pfile.write(text + '\n')
+                pfile.write(text)
                 continue
             seq = ' '
             strs[0] = fname
@@ -52,7 +54,7 @@ def merge_train_images(rootdir, dirlist, dstdir):
 
 
 if __name__=='__main__':
-    img_path = '/data/'
-    imgdir_list = ['a', 'b']
-    out_path = ''
-    merge_train_images('', imgdir_list, out_path)
+    rootpath = '/data/Images/rootdir'
+    imgdir_list = ['163_999', 'ecitic_100', 'ecitic_200', 'ccb200', 'aa200']
+    out_path = '/data/Images/checkcode/data'
+    merge_train_images(rootpath, imgdir_list, out_path)

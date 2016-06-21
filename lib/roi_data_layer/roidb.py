@@ -75,7 +75,11 @@ def add_bbox_regression_targets(roidb):
         for cls in xrange(1, num_classes):
             cls_inds = np.where(targets[:, 0] == cls)[0]
             roidb[im_i]['bbox_targets'][cls_inds, 1:] -= means[cls, :]
-            roidb[im_i]['bbox_targets'][cls_inds, 1:] /= stds[cls, :]
+            #print '=================='
+	    #print roidb[im_i]['bbox_targets'][cls_inds, 1:]
+	    #print stds[cls, :]
+	    #print (roidb[im_i]['bbox_targets'][cls_inds, 1:]/(stds[cls, :]+0.00001))
+            roidb[im_i]['bbox_targets'][cls_inds, 1:] /= (stds[cls, :])
 
     # These values will be needed for making predictions
     # (the predicts will need to be unnormalized and uncentered)

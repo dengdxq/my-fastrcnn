@@ -50,7 +50,7 @@ class ImageSender(threading.Thread):
     def get_image_path(self, idx):
         path = self.src_path+'/'+self.files[idx]
         if os.path.exists(path)==True:
-            return  path
+            return path
         return ''
 
     def url_request(self, imgdata):
@@ -58,13 +58,13 @@ class ImageSender(threading.Thread):
         print 'img size = %d'%(len(imgdata))
         #print imgdata
         #
-        url = 'http://127.0.0.1:8180/checkcode'
+        url = 'http://127.0.0.1:8181/checkcode'
         param = {'tid':'2342sdfdsg_'+str(self.thread_num), 'type':'TEST', 'data': imgdata}
         r = requests.get(url, params=param)
         #r = requests.get('http://127.0.0.1:8180/checkcode?tid=asdfasdff&type=CCCCC&data='+imgdata)
         print '====================='
         #print r.url
-        print 'url = %s'%(r.text)
+        #print 'url = %s'%(r.text)
 
 def maintest(thnum):
     threadlist = []

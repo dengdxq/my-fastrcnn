@@ -137,6 +137,8 @@ def recognize_checkcode_img(net, image_name, classes):
     dict = {}
     dict['ccvalue'] = str
     dict['rects'] = data_list
+    data_string = json.dumps(dict)
+    print data_string
     return dict
 
 
@@ -166,8 +168,6 @@ def get_selective_search_boxes(imgpath):
         return None
     boxes = np.array(boxes)
     return boxes
-
-
 
 #计算两个rect之间的重叠面积
 def calc_rect_overlap(rectelem1, rectelem2):
