@@ -37,6 +37,13 @@ class ImageSender(threading.Thread):
             self.url_request(text64)
             time.sleep(self.interval)
 
+
+    def get_tid(self):
+        alpha_list = ['z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a']
+        name = random.sample(alpha_list, 12)
+	name = ''.join(name)
+        return name
+
     def stop(self):
         self.thread_stop = True
 
@@ -55,14 +62,16 @@ class ImageSender(threading.Thread):
 
     def url_request(self, imgdata):
         #
-        print 'img size = %d'%(len(imgdata))
+        #print 'img size = %d'%(len(imgdata))
         #print imgdata
         #
         url = 'http://127.0.0.1:8181/checkcode'
-        param = {'tid':'2342sdfdsg_'+str(self.thread_num), 'type':'TEST', 'data': imgdata}
+        tid = self.get_tid()+'_'+str(self.thread_num)
+        param = {'tid':tid, 'type':'TEST', 'data': imgdata}
         r = requests.get(url, params=param)
         #r = requests.get('http://127.0.0.1:8180/checkcode?tid=asdfasdff&type=CCCCC&data='+imgdata)
-        print '====================='
+        #print '====================='
+        print 'thread-%d send image'%(self.thread_num)
         #print r.url
         #print 'url = %s'%(r.text)
 

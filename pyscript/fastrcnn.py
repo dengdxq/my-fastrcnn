@@ -31,10 +31,10 @@ import math
 import logging
 import _init_config
 import logconfig
+import json
 
 
 CLASSES = ('__background__','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
-
 
 def get_detection_box(class_name, dets, thresh=0.5):
     inds = np.where(dets[:, -1] >= thresh)[0]
@@ -50,11 +50,15 @@ def get_detection_box(class_name, dets, thresh=0.5):
         ymin = int(bbox[1])
         xmax = int(bbox[2])
         ymax = int(bbox[3])
+        '''
         if xmax==160:
             xmax = 159
         if ymax==60:
             ymax = 59
-        charbox_list.append({'char':class_name, 'xoffset':bbox[0], 'xmin':xmin, 'ymin':ymin, 'xmax':xmax, 'ymax':ymax, 'score':score});
+        '''
+        #dictelem = dict('char'=class_name, 'xoffset'=bbox[0], 'xmin'=xmin, 'ymin'=ymin, 'xmax'=xmax, 'ymax'=ymax, 'score'=score)
+        dictelem = dict(char=class_name, xoffset=bbox[0], xmin=xmin, ymin=ymin, xmax=xmax, ymax=ymax, score=score)
+        charbox_list.append(dictelem);
     return charbox_list
 
 
@@ -96,11 +100,29 @@ def recognize_img(net, image_name, box_file, classes):
     return str
 
 
+def load_image(image_name):
+    im = cv2.imread(image_name)
+    h = im.shape[0]
+    w = im.shape[1]
+    if h >= 50:
+        return im
+    ratio = 1.0*w/h
+    hh = 60
+    ww = int(ratio*hh)
+    img = cv2.resize(im, (ww,hh), interpolation=cv2.INTER_CUBIC)    
+    return img
+
+
 def recognize_checkcode_img(net, image_name, classes):
     boxes = get_selective_search_boxes(image_name)
     if boxes == None:
         return None
-    im = cv2.imread(image_name)
+    #im = cv2.imread(image_name)
+    im = load_image(image_name)
+    #print im
+    #print type(im)
+    #print im.shape
+    #cv2.imwrite('asasdf.jpg', im)
     scores, boxes = im_detect(net, im, boxes)
     CONF_THRESH = 0.85
     NMS_THRESH = 0.3
@@ -120,26 +142,20 @@ def recognize_checkcode_img(net, image_name, classes):
             continue
         data_list.extend(tmplist)
     data_list.sort(key=lambda obj:obj.get('xoffset'), reverse=False)
-    #print 'len1 = %d'%(len(data_list))
-    #str = ''
-    #for elem in data_list:
-    #    str = str + elem.get('char')
-    #print str
-    #data_list = char_roi_filter(data_list)
-    #print 'len2 = %d'%(len(data_list))
-    #print data_list
     str = ''
     for elem in data_list:
         str = str + elem.get('char')
     #print data_list
-    #print str
-    #print '-=-=-=-='
     dict = {}
     dict['ccvalue'] = str
     dict['rects'] = data_list
-    data_string = json.dumps(dict)
-    print data_string
+    #print dict
     return dict
+    #data_string = json.dumps(dict)
+    #print data_string
+    #return data_string
+    
+
 
 
 def load_caffe_net(prototxt, caffemodel, issetgpu):
@@ -157,7 +173,11 @@ def get_selective_search_boxes(imgpath):
     if os.path.exists(imgpath)==False:
         print '[ERROR]: %s is not exist!'%(imgpath)
         return None
-    img = io.imread(imgpath)
+    #img = io.imread(imgpath)
+    img = load_image(imgpath)
+    #print img
+    #print type(img)
+    #exit()
     rects = []
     dlib.find_candidate_object_locations(img,rects,min_size=0)
     boxes = []

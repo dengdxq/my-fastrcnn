@@ -10,20 +10,24 @@ import base64
 import logging
 import os
 from urllib import unquote
-import threading
+#import threading
 
 CAFFE_NET = None
 CLASS_TUPLE = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
+img_num = 0
+save_image_path = ''
 
 def load_caffe_net():
 	global CAFFE_NET
 	CAFFE_NET = fastrcnn.load_caffe_net(_init_config.prototxt, _init_config.caffemodel, 1)
-	save_img_path = ''
-	img_num = 0
+	
 
 class MainHandler(tornado.web.RequestHandler):	
+	
 	logger = logging.getLogger('HttpMainHandler')
 	def get(self):		
+		global img_num
+		global save_image_path
 		global CAFFE_NET
 		global CLASS_TUPLE
 		param_dict = {}
@@ -35,41 +39,39 @@ class MainHandler(tornado.web.RequestHandler):
 		#self.write("Hello, world")
 		if len(param_dict['tid'])==0:
 			self.logger.info('The Params of tid is null!')
-			self.write('parameter error!')
-			return
-		print '==========================================1==='
+			self.write('parameter error, loss tid!')
+			return		
 		if len(param_dict['type'])==0:
 			self.logger.info('The Params of type is null!')
-			self.write('parameter error!')
+			self.write('parameter error, loss type!')
 			return
-		print '==========================================2==='
 		if len(param_dict['data'])==0:
 			self.logger.info('The Params of data is null!')
-			self.write('parameter error!')
+			self.write('parameter error, loss image data!')
 			return
-		print '==========================================3==='
 		self.logger.info('GET Params:%s'%(json.dumps(param_dict)))		
-		self.logger.info('THREAD NAME = %s,num=%d'%(threading.currentThread().getName(), threading.activeCount()))
+		#self.logger.info('THREAD NAME = %s,num=%d'%(threading.currentThread().getName(), threading.activeCount()))
 		#---save image---
 		#file_num = self.get_file_number_in_dir(_init_config.img_save_dir)
 		#if file_num==_init_config.img_max_num:
-		print '==========================================4==='
-		print _init_config.img_max_num
-		if self.img_num ==_init_config.img_max_num:
-		    self.make_dir(_init_config.img_save_dir)
-		savepath = _init_config.img_save_dir + '/' + self.get_image_name() +'_' +param_dict['type']+'.jpg'
-		print savepath
+		print '%s=%d'%(save_image_path,img_num)
+		if img_num==_init_config.img_max_num or img_num==0 or os.path.exists(save_image_path)==False:
+			save_image_path = self.make_dir(_init_config.img_save_dir)
+			img_num = 0
+		#print param_dict['tid']
+		savepath = save_image_path + '/' + self.get_image_name() +'_'+param_dict['tid']+'_'+param_dict['type']+'.jpg'
 		self.logger.info('TID:%s; SAVE Image:%s'%(param_dict['tid'], savepath))        
 		self.save_image(param_dict['data'], savepath)
-		self.img_num += 1
+		img_num += 1
 		#---recognize---
 		start_time = time.time()
 		cc_value = fastrcnn.recognize_checkcode_img(CAFFE_NET, savepath, CLASS_TUPLE)['ccvalue']
 		end_time = time.time()
+		cc_result = '20160623'
+		if cc_value != '':
+			cc_result = cc_value 
 		self.logger.info('TID:%s; recognize_checkcode_img take:%s sec'%(param_dict['tid'], str(end_time-start_time)))
-		if cc_value == '':
-		    cc_value = '{}'
-		self.logger.info('TID:%s; RECOGNIZE Result:%s<=>%s'%(param_dict['tid'], savepath, cc_value))
+		self.logger.info('TID:%s; RECOGNIZE Result:%s<=>%s'%(param_dict['tid'], savepath, cc_result))
 		response_str = self.create_response(cc_value, param_dict['tid'])
 		self.logger.info('TID:%s; RETURN String:%s'%(param_dict['tid'], response_str))
 		self.write(response_str)
@@ -94,7 +96,8 @@ class MainHandler(tornado.web.RequestHandler):
 	    alpha_list = ['z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a']
 	    timestamp = time.time()
 	    stimestamp = str(timestamp)
-	    stimestamp = stimestamp.replace('.', '_')
+	    #stimestamp = stimestamp.replace('.', '_')
+	    stimestamp = stimestamp.split('.')[0]
 	    name = random.sample(alpha_list, 6)
 	    name = ''.join(name)
 	    fname = stimestamp+'_'+name
@@ -118,6 +121,7 @@ class MainHandler(tornado.web.RequestHandler):
 	        if os.path.exists(path+'/'+dname)==False:
 	            break
 	        dname = self.get_dir_name()
+	    os.mkdir(path+'/'+dname)
 	    return (path+'/'+dname)
 
 	def get_file_list(self, path):
@@ -127,12 +131,13 @@ class MainHandler(tornado.web.RequestHandler):
 	    return filelist
 
 
-
-
 if __name__ == "__main__":
+	logger = logging.getLogger('main')
+	logger.info('restart recognize server!')
 	load_caffe_net()
-	print 'load caffe net complete!'
+	logger.info('load caffe net complete!')
 	application = tornado.web.Application([(r"/checkcode", MainHandler),])
 	application.listen(8181)
-	print 'checkcode recognize server start!'
+	logger.info('checkcode recognize server start!')
 	tornado.ioloop.IOLoop.instance().start()
+	logger.info('checkcode recognize server complete!')

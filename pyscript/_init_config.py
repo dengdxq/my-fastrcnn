@@ -4,7 +4,7 @@ import os.path as osp
 import sys
 
 prototxt = '/data/code/my-fastrcnn/models/checkcode_vgg16/test.prototxt'
-caffemodel = '/data/code/my-fastrcnn/output/default/train.1/checkcode_vgg16_fast_rcnn_iter_110000.caffemodel'
+caffemodel = '/data/code/my-fastrcnn/output/default/train/checkcode_vgg16_fast_rcnn_iter_150000.caffemodel'
 ############################
 #IMAGE
 ############################

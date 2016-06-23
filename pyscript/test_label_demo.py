@@ -63,4 +63,4 @@ def label_images(src_img_path, dst_path):
 
 if __name__=='__main__':
     #label_images('/data/Images/checkcode/data/TestImgs2', '/data/Images/checkcode/data/TestImgs_label2')
-    label_images('/data/Images/data_6/Images', '/data/Images/data_6/Label')
+    label_images('/data/Images/data_4/Images', '/data/Images/data_4/Label')
