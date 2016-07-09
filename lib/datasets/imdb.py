@@ -115,11 +115,17 @@ class imdb(object):
                     '''
                     print 'b=%d'%(b)
                     print 'afafadsasfasffasf==-'
+		    #print widths[i]
+		    print oldx1
+		    print '--------------------'
+		    print oldx2
                     print boxes[b][2]
                     print boxes[b][0]
                     print 'asfasffafaf========'
                     '''
                     boxes[b][0] = 0
+		if boxes[b][2] < 0:
+		    boxes[b][2] = 0
             #======================================
             #print i
             '''
@@ -209,18 +215,26 @@ class imdb(object):
                 overlaps[I, gt_classes[argmaxes[I]]] = maxes[I]
 
             overlaps = scipy.sparse.csr_matrix(overlaps)
+	    #if i==823:
+		#print '-===-=-=-==--===823-=-='
+		#print boxes
+		#print overlaps
+		#exit()
            
             roidb.append({'boxes' : boxes,
                           'gt_classes' : np.zeros((num_boxes,),
                                                   dtype=np.int32),
                           'gt_overlaps' : overlaps,
                           'flipped' : False})
-        #print 'roidb size = %d'%(len(roidb))
+        print 'roidb size = %d'%(len(roidb))
+        #print roidb[823]
         return roidb
 
     @staticmethod
     def merge_roidbs(a, b):
         assert len(a) == len(b)
+	#print 'merge_roidbs=%d'%(len(a))
+	#print a[823]['boxes']
         for i in xrange(len(a)):
             a[i]['boxes'] = np.vstack((a[i]['boxes'], b[i]['boxes']))
             a[i]['gt_classes'] = np.hstack((a[i]['gt_classes'],
@@ -231,6 +245,7 @@ class imdb(object):
             #print '==--==--==--'
             a[i]['gt_overlaps'] = scipy.sparse.vstack([a[i]['gt_overlaps'],
                                                        b[i]['gt_overlaps']])
+        #print a[823]
         return a
 
     def competition_mode(self, on):

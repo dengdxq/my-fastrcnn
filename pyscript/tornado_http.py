@@ -39,22 +39,35 @@ class MainHandler(tornado.web.RequestHandler):
 		#self.write("Hello, world")
 		if len(param_dict['tid'])==0:
 			self.logger.info('The Params of tid is null!')
-			self.write('parameter error, loss tid!')
+			str_dict = {}
+			str_dict['errcode'] = 101
+			str_dict['errmsg'] = 'parameter error, loss tid!'
+			self.write(json.dumps(str_dict))
 			return		
 		if len(param_dict['type'])==0:
 			self.logger.info('The Params of type is null!')
-			self.write('parameter error, loss type!')
+			str_dict = {}
+			str_dict['errcode'] = 102
+			str_dict['errmsg'] = 'parameter error, loss type!'
+			self.write(json.dumps(str_dict))
 			return
 		if len(param_dict['data'])==0:
 			self.logger.info('The Params of data is null!')
-			self.write('parameter error, loss image data!')
+			str_dict = {}
+			str_dict['errcode'] = 103
+			str_dict['errmsg'] = 'parameter error, loss data!'
+			self.write(json.dumps(str_dict))
 			return
 		self.logger.info('GET Params:%s'%(json.dumps(param_dict)))		
 		#self.logger.info('THREAD NAME = %s,num=%d'%(threading.currentThread().getName(), threading.activeCount()))
 		#---save image---
 		#file_num = self.get_file_number_in_dir(_init_config.img_save_dir)
 		#if file_num==_init_config.img_max_num:
-		print '%s=%d'%(save_image_path,img_num)
+		#print '%s=%d'%(save_image_path,img_num)
+		flg = is_recognize(param_dict['type'])
+		if flg == 1:
+			self.logger.info('type=%s in no recoginze list!'%(param_dict['type']))
+			return
 		if img_num==_init_config.img_max_num or img_num==0 or os.path.exists(save_image_path)==False:
 			save_image_path = self.make_dir(_init_config.img_save_dir)
 			img_num = 0
@@ -67,7 +80,7 @@ class MainHandler(tornado.web.RequestHandler):
 		start_time = time.time()
 		cc_value = fastrcnn.recognize_checkcode_img(CAFFE_NET, savepath, CLASS_TUPLE)['ccvalue']
 		end_time = time.time()
-		cc_result = '20160623'
+		cc_result = '-1'
 		if cc_value != '':
 			cc_result = cc_value 
 		self.logger.info('TID:%s; recognize_checkcode_img take:%s sec'%(param_dict['tid'], str(end_time-start_time)))
@@ -129,6 +142,11 @@ class MainHandler(tornado.web.RequestHandler):
 	    for root,dirs,files in os.walk(path):
 	        filelist.extend(files)
 	    return filelist
+
+	def is_recognize(cctype):
+		if elem in _init_config.type_balck_list:
+			return 1
+		return 0
 
 
 if __name__ == "__main__":

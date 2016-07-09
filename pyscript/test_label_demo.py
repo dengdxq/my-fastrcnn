@@ -6,7 +6,7 @@ import random
 
 
 PROTOTXT = '/data/code/my-fastrcnn/models/checkcode_vgg16/test.prototxt'
-CAFFEMODEL = '/data/code/my-fastrcnn/output/default/train/checkcode_vgg16_fast_rcnn_iter_100000.caffemodel'
+CAFFEMODEL = '/data/code/my-fastrcnn/output/default/train/checkcode_vgg16_fast_rcnn_iter_200000.caffemodel'
 CLASS_TUPLE = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
 
 def get_file_list(path, suffix):
@@ -43,13 +43,16 @@ def label_images(src_img_path, dst_path):
     for i in range(0,num):
         print 'process: %d'%(i+1)
         imgpath = src_img_path + '/' + imglist[i]
+        
         if os.path.exists(imgpath)==False:
             continue
         cc_value = fastrcnn.recognize_checkcode_img(caffe_net, imgpath, CLASS_TUPLE)
+        print imgpath
+        print cc_value['ccvalue']
         dpath = dst_path + '/' + cc_value['ccvalue'] + '.jpg'
         if os.path.exists(dpath)==True:
             dpath = dst_path + '/' + cc_value['ccvalue'] + '_' + random_string(6) + '.jpg'
-        shutil.copyfile(imgpath, dpath)
+        #shutil.copyfile(imgpath, dpath)
         #char rect
         rects = cc_value['rects']
         pfile.write(imglist[i]+' ')
@@ -63,4 +66,8 @@ def label_images(src_img_path, dst_path):
 
 if __name__=='__main__':
     #label_images('/data/Images/checkcode/data/TestImgs2', '/data/Images/checkcode/data/TestImgs_label2')
-    label_images('/data/Images/data_4/Images', '/data/Images/data_4/Label')
+    path = '/data/aaa/checkImage/new_root_enlarge'
+    #label_images(path+'/7000', path+'/label')
+    label_images(path+'/8000', path+'/label')
+    label_images(path+'/9000', path+'/label')
+    label_images(path+'/10000', path+'/label')

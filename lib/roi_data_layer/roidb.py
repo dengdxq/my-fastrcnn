@@ -10,6 +10,7 @@
 import numpy as np
 from fast_rcnn.config import cfg
 import utils.cython_bbox
+import time
 
 def prepare_roidb(imdb):
     """Enrich the imdb's roidb by adding some derived quantities that
@@ -19,6 +20,8 @@ def prepare_roidb(imdb):
     recorded.
     """
     roidb = imdb.roidb
+    #print roidb[823]
+    #print imdb.image_index
     for i in xrange(len(imdb.image_index)):
         roidb[i]['image'] = imdb.image_path_at(i)
         # need gt_overlaps as a dense array for argmax
@@ -42,15 +45,32 @@ def add_bbox_regression_targets(roidb):
     assert len(roidb) > 0
     assert 'max_classes' in roidb[0], 'Did you call prepare_roidb first?'
 
+
+    #print roidb[823]
     num_images = len(roidb)
+    #print type(roidb)
+    #print roidb
+    #print 'image num = %d'%(num_images)
+    #print '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-='
     # Infer number of classes from the number of columns in gt_overlaps
     num_classes = roidb[0]['gt_overlaps'].shape[1]
     for im_i in xrange(num_images):
         rois = roidb[im_i]['boxes']
         max_overlaps = roidb[im_i]['max_overlaps']
         max_classes = roidb[im_i]['max_classes']
+	'''
+	if im_i==823:
+            #print rois
+	    #print max_overlaps
+	    #print max_classes
+	    print '--------------------------------'
+	    time.sleep(5)
+	'''
+	#print im_i
         roidb[im_i]['bbox_targets'] = \
                 _compute_targets(rois, max_overlaps, max_classes)
+	#print '--------------------------------'
+	#time.sleep(0.1)
 
     # Compute values needed for means and stds
     # var(x) = E(x^2) - E(x)^2
@@ -119,7 +139,12 @@ def _compute_targets(rois, overlaps, labels):
     targets_dy = (gt_ctr_y - ex_ctr_y) / ex_heights
     targets_dw = np.log(gt_widths / ex_widths)
     targets_dh = np.log(gt_heights / ex_heights)
-
+    '''
+    print gt_heights
+    print ex_heights
+    print (gt_heights/ex_heights) 
+    print '========================================================================='
+    '''
     targets = np.zeros((rois.shape[0], 5), dtype=np.float32)
     targets[ex_inds, 0] = labels[ex_inds]
     targets[ex_inds, 1] = targets_dx

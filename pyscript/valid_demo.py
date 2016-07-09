@@ -6,7 +6,7 @@ import time
 #并且比较了matlab版的ss和dlib的ss之间的效果
 
 
-IMAGE_DIR = '/data/Images/checkcode/data/Images'
+IMAGE_DIR = '/data/Images/rootdir_gjj/2000_f'
 SSBOX_DIR = '/data/Images/checkcode/data/ssbox'
 CAFFE_NET = None
 CLASS_TUPLE = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9')
@@ -37,26 +37,34 @@ def load_annotation_file(filename):
             print "[ERROR]lineNo. %d: %s"%(line_no, text)
             continue
         cnt += 1
+        print '(filename=%s)'%file_name
         ccvalue1 = get_checkcode_value_dlib(file_name)
-        ccvalue2 = get_checkcode_value_matlab(file_name)
-        flg1 = cmp(label, ccvalue1)
-        flg2 = cmp(label, ccvalue2)
+        ccvalue2 = ''#get_checkcode_value_matlab(file_name)
+        flg1 = cmp(label.lower(), ccvalue1.lower())
+        flg2 = cmp(label.lower(), ccvalue2.lower())
         flg3 = cmp(ccvalue1, ccvalue2)
         flg4 = cmp(ccvalue1.lower(), ccvalue2.lower())
         if flg1 == 0:
             cnt1 += 1
+        else:
+            #pass
+            print '%s != %s'%(ccvalue1,label)
         if flg2 == 0:
             cnt2 += 1
+        else:
+            #print '%s != %s'%(ccvalue2,label)
+            pass
         if flg3 == 0:
             cnt3 += 1
         if flg4 == 0:
             cnt4 += 1
-	if flg4 != 0:
-            print '%s != %s'%(ccvalue1,ccvalue2)
+        if flg4 != 0:
+            pass
+            #print '%s != %s'%(ccvalue1,ccvalue2)
     result_dict = {}
     result_dict['total'] = cnt
-    result_dict['ss_mat'] = cnt1
-    result_dict['ss_dlib'] = cnt2
+    result_dict['ss_mat'] = cnt2
+    result_dict['ss_dlib'] = cnt1
     result_dict['mat_dlib'] = cnt3
     return result_dict
 
@@ -87,10 +95,11 @@ def get_pure_filename(filename):
     return strs[0]
 
 if __name__ == '__main__': #53.4-979082-6230 ##1128253 = 149171  6575
+    global IMAGE_DIR
     prototxt = '/data/code/my-fastrcnn/models/checkcode_vgg16/test.prototxt'
-    caffemodel = '/data/code/my-fastrcnn/output/default/train_1w-10w_999zhang/checkcode_vgg16_fast_rcnn_iter_100000.caffemodel'
+    caffemodel = '/data/code/my-fastrcnn/output/default/train/checkcode_vgg16_fast_rcnn_iter_200000.caffemodel'
     load_caffe_net(prototxt, caffemodel)
-    imglist = '/data/Images/checkcode/imglist.txt'
+    imglist = IMAGE_DIR + '/' + 'imglist.txt'#'/data/Images/checkcode/imglist.txt'
     res = load_annotation_file(imglist)
     print res
     print 'Total image number is: %d'%(res['total'])

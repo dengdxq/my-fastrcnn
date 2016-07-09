@@ -4,7 +4,7 @@ import os.path as osp
 import sys
 
 prototxt = '/data/code/my-fastrcnn/models/checkcode_vgg16/test.prototxt'
-caffemodel = '/data/code/my-fastrcnn/output/default/train/checkcode_vgg16_fast_rcnn_iter_150000.caffemodel'
+caffemodel = '/data/code/my-fastrcnn/output/default/train/checkcode_vgg16_fast_rcnn_iter_130000.caffemodel'
 ############################
 #IMAGE
 ############################
@@ -17,4 +17,7 @@ log_file = '/data/tmp/logs'
 log_file_size = 104857600 #100M=1024*1024*100
 log_file_name = 'checkcode.log'
 log_file_max_num = 50
-
+############################
+#
+############################
+type_black_list = ['nanchong','taizhou','baoding']

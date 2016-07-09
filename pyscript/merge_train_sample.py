@@ -54,7 +54,8 @@ def merge_train_images(rootdir, dirlist, dstdir):
 
 
 if __name__=='__main__':
-    rootpath = '/data/Images/rootdir'
-    imgdir_list = ['163_999', 'ecitic_100', 'ecitic_200', 'ccb_200', 'aa_200']
+    rootpath = '/data/Images/rootdir_gjj'
+    #imgdir_list = ['163_999', 'ecitic_100', 'ecitic_200', 'ccb0_200', 'ccb1_200', 'ccb2_200', 'ccb3_200', 'cgb_200', 'spdb_247']
+    imgdir_list = ['0_f', '500_f', '1000_f', '1500_f', '2000_f', '2500_f', '3000_f', '3500_f', '4000_f']
     out_path = '/data/Images/checkcode/data'
     merge_train_images(rootpath, imgdir_list, out_path)

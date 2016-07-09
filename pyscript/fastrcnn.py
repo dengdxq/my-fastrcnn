@@ -104,10 +104,10 @@ def load_image(image_name):
     im = cv2.imread(image_name)
     h = im.shape[0]
     w = im.shape[1]
-    if h >= 50:
+    if h >= 120:
         return im
     ratio = 1.0*w/h
-    hh = 60
+    hh = 120
     ww = int(ratio*hh)
     img = cv2.resize(im, (ww,hh), interpolation=cv2.INTER_CUBIC)    
     return img
@@ -124,7 +124,7 @@ def recognize_checkcode_img(net, image_name, classes):
     #print im.shape
     #cv2.imwrite('asasdf.jpg', im)
     scores, boxes = im_detect(net, im, boxes)
-    CONF_THRESH = 0.85
+    CONF_THRESH = 0.5
     NMS_THRESH = 0.3
     data_list = []
     for cls in classes:
@@ -142,10 +142,20 @@ def recognize_checkcode_img(net, image_name, classes):
             continue
         data_list.extend(tmplist)
     data_list.sort(key=lambda obj:obj.get('xoffset'), reverse=False)
+    #
+    #print data_list
+    #print len(data_list)
+    #print '-=-=-=-=-=-=-=-='
+    data_list = rect_filter(data_list, 0.85)
+    #print len(data_list)
+    #print '-=-=-=-=-=-=-=-='
+    data_list = char_roi_filter(data_list)
+    #print len(res_list)
+    #print '-=-=-=-=-=-=-=-='
     str = ''
     for elem in data_list:
         str = str + elem.get('char')
-    #print data_list
+    #print res_list
     dict = {}
     dict['ccvalue'] = str
     dict['rects'] = data_list
@@ -155,8 +165,6 @@ def recognize_checkcode_img(net, image_name, classes):
     #print data_string
     #return data_string
     
-
-
 
 def load_caffe_net(prototxt, caffemodel, issetgpu):
     if issetgpu==1:
@@ -189,12 +197,57 @@ def get_selective_search_boxes(imgpath):
     boxes = np.array(boxes)
     return boxes
 
+#
+def rect_filter(rectlist, th):
+    #delete according to width and height
+    dellist = []
+    bdpq = ['b','d','p','q']
+    idx = -1
+    for rt in rectlist:
+        idx += 1
+        #
+        if rt['score']<th and rt['char'] not in bdpq:
+            dellist.append(idx)
+            continue
+        #
+        if rt['char']=='1' or rt['char']=='l':
+            continue
+        width  = rt['xmax'] - rt['xmin']
+        height = rt['ymax'] - rt['ymin']
+        if width<5 or height<8:
+            dellist.append(idx)
+    datalist = []
+    length = len(rectlist)
+    for idx in xrange(0,length):
+        if idx in dellist:
+            continue
+        datalist.append(rectlist[idx])
+    return datalist
+    
 #计算两个rect之间的重叠面积
-def calc_rect_overlap(rectelem1, rectelem2):
+def calc_rect_overlap_area(rectelem1, rectelem2):
+    #print rectelem1
+    #print rectelem2
+    
+    if (rectelem1['xmin']<=rectelem2['xmin']) and (rectelem1['xmax']>=rectelem2['xmax']):
+        return 1.0
+    if (rectelem1['xmax']<rectelem2['xmin']) or (rectelem1['ymin']>=rectelem2['ymax']) or (rectelem1['ymax']<=rectelem2['ymin']):
+        return 0.0
     width = rectelem1['xmax'] - rectelem2['xmin']
-    height = rectelem1['ymax'] - rectelem2['ymin']
-    if width<=0 or height<=0:
-        return 0
+    height = 0
+    #down
+    if (rectelem2['ymin']<rectelem1['ymax']) and (rectelem2['ymin']>rectelem1['ymin']):
+        height = rectelem1['ymax'] - rectelem2['ymin']
+    #top
+    if (rectelem2['ymax']<rectelem1['ymax']) and (rectelem2['ymax']>rectelem1['ymin']):
+        height = rectelem2['ymax'] - rectelem1['ymin']
+    #contain
+    if (rectelem1['ymin']<=rectelem2['ymin']) and (rectelem1['ymax']>=rectelem2['ymax']):
+        height = rectelem2['ymax'] - rectelem2['ymin']
+    elif (rectelem2['ymin']<=rectelem1['ymin']) and (rectelem2['ymax']>=rectelem1['ymax']):
+        height = rectelem1['ymax'] - rectelem1['ymin']
+    if height==0:        
+        return 0.0
     rect1_w = rectelem1['xmax'] - rectelem1['xmin']
     rect1_h = rectelem1['ymax'] - rectelem1['ymin']
     return (1.0*height*width/(rect1_w*rect1_h))
@@ -203,29 +256,55 @@ def calc_rect_overlap(rectelem1, rectelem2):
 def char_roi_filter(rectlist):
     n = len(rectlist)
     datalist = []
-    idx1 = 0
-    idx2 = 0
-    while True:
-        if idx1 >= n:
-            break
-        elif idx1 == n-1:
-            datalist.append(rectlist[idx1])
-            break
-        idx2 = idx1 + 1
-        #print '%d---%d'%(idx1,idx2)
-        area = calc_rect_overlap(rectlist[idx1], rectlist[idx2])      
-        #print area  
-        if area < 0.5:
-            datalist.append(rectlist[idx1])
-            idx1 += 1
+    dellist = []
+    for idx1 in xrange(0,n):
+        '''
+        print 'idx=%d'%(idx1)
+        print 'dellist='
+        print dellist
+        if idx1 in dellist:
             continue
-        score1 = rectlist[idx1]['score']
-        score2 = rectlist[idx2]['score']
-        if score1>score2:
+        '''
+        area_list = {}
+        for idx2 in xrange(idx1+1,n):            
+            area = calc_rect_overlap_area(rectlist[idx1], rectlist[idx2])
+            #print '(%d,%d)=%f'%(idx1,idx2,area)
+            #print '========================'
+            if area < 0.5:
+                continue
+            area_list[str(idx2)] = area
+        if len(area_list)==0:
             datalist.append(rectlist[idx1])
-        else :
-            datalist.append(rectlist[idx2])
-        idx1 += 2
+            continue
+        max_area = 0.0
+        max_idx = -1
+        for (k,v) in area_list.items():
+            if v > max_area:
+                max_area = v
+                max_idx = int(k)
+            else :
+                dellist.append(int(k))
+        #print '(area=%f,idx=%d)'%(max_area,max_idx)
+        if rectlist[idx1]['score'] > rectlist[max_idx]['score']:
+            datalist.append(rectlist[idx1])
+            dellist.append(max_idx)
+        else:
+            datalist.append(rectlist[max_idx])
+            dellist.append(idx1)
+    #print dellist
+    #print rectlist
+    datalist = []
+    #datalist = rectlist
+    #print 'len1=%d'%(len(datalist))
+    for idx in xrange(0,n):
+        if idx in dellist:
+            continue
+        #print idx
+        datalist.append(rectlist[idx])
+    #for elem in dellist:
+    #    del rectlist[elem]
+    #print len(datalist)   
+    #print datalist 
     return datalist
 
 if __name__ == '__main__':

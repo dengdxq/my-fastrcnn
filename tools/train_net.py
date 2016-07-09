@@ -86,6 +86,7 @@ if __name__ == '__main__':
     print 'imdbname=%s'%(imdb)
     print 'Loaded dataset `{:s}` for training'.format(imdb.name)
     roidb = get_training_roidb(imdb)
+    #print roidb
 
     output_dir = get_output_dir(imdb, None)
     print 'Output will be saved to `{:s}`'.format(output_dir)
