@@ -102,6 +102,10 @@ def recognize_img(net, image_name, box_file, classes):
 
 def load_image(image_name):
     im = cv2.imread(image_name)
+    if im==None:
+        return None
+    #print im
+    #exit()
     h = im.shape[0]
     w = im.shape[1]
     if h >= 120:
@@ -116,7 +120,11 @@ def load_image(image_name):
 def recognize_checkcode_img(net, image_name, classes):
     boxes = get_selective_search_boxes(image_name)
     if boxes == None:
-        return None
+        dict = {}
+        dict['ccvalue'] = ''
+        dict['rects'] = []
+        dict['code'] = 1
+        return dict
     #im = cv2.imread(image_name)
     im = load_image(image_name)
     #print im
@@ -125,7 +133,7 @@ def recognize_checkcode_img(net, image_name, classes):
     #cv2.imwrite('asasdf.jpg', im)
     scores, boxes = im_detect(net, im, boxes)
     CONF_THRESH = 0.5
-    NMS_THRESH = 0.3
+    NMS_THRESH = 0.1
     data_list = []
     for cls in classes:
         cls_ind = CLASSES.index(cls)
@@ -159,6 +167,7 @@ def recognize_checkcode_img(net, image_name, classes):
     dict = {}
     dict['ccvalue'] = str
     dict['rects'] = data_list
+    dict['code'] = 0
     #print dict
     return dict
     #data_string = json.dumps(dict)
@@ -183,6 +192,8 @@ def get_selective_search_boxes(imgpath):
         return None
     #img = io.imread(imgpath)
     img = load_image(imgpath)
+    if img==None:
+        return None
     #print img
     #print type(img)
     #exit()
@@ -198,6 +209,7 @@ def get_selective_search_boxes(imgpath):
     return boxes
 
 #
+'''
 def rect_filter(rectlist, th):
     #delete according to width and height
     dellist = []
@@ -216,6 +228,54 @@ def rect_filter(rectlist, th):
         height = rt['ymax'] - rt['ymin']
         if width<5 or height<8:
             dellist.append(idx)
+    datalist = []
+    length = len(rectlist)
+    for idx in xrange(0,length):
+        if idx in dellist:
+            continue
+        datalist.append(rectlist[idx])
+    return datalist
+'''
+
+def rect_filter(rectlist, th):
+    #delete according to width and height
+    #print rectlist
+    dellist = []
+    bdpq = ['b','d','p','q']
+    idx = -1
+    for rt in rectlist:
+        idx += 1
+        #
+        if rt['char']=='1' or rt['char']=='l':
+            continue
+        width  = rt['xmax'] - rt['xmin']
+        height = rt['ymax'] - rt['ymin']
+        if width<5 or height<8:
+            dellist.append(idx)
+    #print dellist
+    #delete box according to position of box    
+    idx = -1
+    pos = 0
+    cnt = 0
+    for rt in rectlist:
+        idx += 1
+        if idx in dellist:
+            continue
+        cnt += 1
+        pos += (rt['ymax'] + rt['ymin'])/2
+    avgpos = 1.0*pos/cnt
+    #print 'pos=%f'%(avgpos)
+    idx = -1
+    for rt in rectlist:
+        idx += 1
+        if idx in dellist:
+            continue
+        pos = (rt['ymax'] + rt['ymin'])/2
+        #print '(y1=%d,y2=%d,pos=%d)'%(rt['ymin'],rt['ymax'],pos)
+        if abs(pos-avgpos) > 20:
+            dellist.append(idx)
+    #print dellist
+    #
     datalist = []
     length = len(rectlist)
     for idx in xrange(0,length):
