@@ -34,7 +34,8 @@ class MainHandler(tornado.web.RequestHandler):
 		param_dict['tid'] = self.get_argument('tid', '')
 		param_dict['data'] = self.get_argument('data', '')
 		param_dict['type'] = self.get_argument('type', '')
-		print param_dict['tid']
+		param_dict['isalphabet'] = self.get_argument('isalphabet', '')
+		#print param_dict['tid']
 		#self.write(greeting)
 		#self.write("Hello, world")
 		if len(param_dict['tid'])==0:
@@ -85,6 +86,19 @@ class MainHandler(tornado.web.RequestHandler):
 			cc_result = cc_value 
 		self.logger.info('TID:%s; recognize_checkcode_img take:%s sec'%(param_dict['tid'], str(end_time-start_time)))
 		self.logger.info('TID:%s; RECOGNIZE Result:%s<=>%s'%(param_dict['tid'], savepath, cc_result))
+		#
+		#'''
+		if len(param_dict['isalphabet'])!=0:
+			res = is_string_valid(cc_result, param_dict['isalphabet'])
+			if res==1: #not fit the fitness
+				self.logger.info('The RECOGNIZE Result don\'t satisfy the checkcode type!')
+				str_dict = {}
+				str_dict['errcode'] = 104
+				str_dict['errmsg'] = 'recognize type error!'
+				self.write(json.dumps(str_dict))
+				return
+		#'''
+		#
 		response_str = self.create_response(cc_value, param_dict['tid'])
 		self.logger.info('TID:%s; RETURN String:%s'%(param_dict['tid'], response_str))
 		self.write(response_str)
@@ -147,6 +161,21 @@ class MainHandler(tornado.web.RequestHandler):
 		if elem in _init_config.type_balck_list:
 			return 1
 		return 0
+
+	def is_string_valid(string, cctype):
+		res = is_digit_alphabet(string)
+		if str(res)==cctype:
+			return 0
+		return 1
+
+	def is_digit_alphabet(string):
+		if string.isdigit():
+			return 0
+		elif string.isalpha():
+			return 1
+		return 2
+
+	def 
 
 
 if __name__ == "__main__":
