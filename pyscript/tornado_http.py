@@ -65,7 +65,7 @@ class MainHandler(tornado.web.RequestHandler):
 		#file_num = self.get_file_number_in_dir(_init_config.img_save_dir)
 		#if file_num==_init_config.img_max_num:
 		#print '%s=%d'%(save_image_path,img_num)
-		flg = is_recognize(param_dict['type'])
+		flg = self.is_recognized(param_dict['type'])
 		if flg == 1:
 			self.logger.info('type=%s in no recoginze list!'%(param_dict['type']))
 			return
@@ -74,7 +74,7 @@ class MainHandler(tornado.web.RequestHandler):
 			img_num = 0
 		#print param_dict['tid']
 		savepath = save_image_path + '/' + self.get_image_name() +'_'+param_dict['tid']+'_'+param_dict['type']+'.jpg'
-		self.logger.info('TID:%s; SAVE Image:%s'%(param_dict['tid'], savepath))        
+		self.logger.info('TID:%s; SAVE Image:%s'%(param_dict['tid'], savepath))
 		self.save_image(param_dict['data'], savepath)
 		img_num += 1
 		#---recognize---
@@ -89,7 +89,7 @@ class MainHandler(tornado.web.RequestHandler):
 		#
 		#'''
 		if len(param_dict['isalphabet'])!=0:
-			res = is_string_valid(cc_result, param_dict['isalphabet'])
+			res = self.is_string_valid(cc_result, param_dict['isalphabet'])
 			if res==1: #not fit the fitness
 				self.logger.info('The RECOGNIZE Result don\'t satisfy the checkcode type!')
 				str_dict = {}
@@ -132,9 +132,15 @@ class MainHandler(tornado.web.RequestHandler):
 
 	def get_dir_name(self):
 	    timestamp = time.time()
-	    stimestamp = str(timestamp)
-	    strs = stimestamp.split('.')
-	    return strs[0]
+	    #stimestamp = str(timestamp)
+	    #strs = stimestamp.split('.')
+	    #imeStr=time.strftime("%Y-%m-%d %H:%M:%S", ltime)
+	    #return strs[0]
+	    #format date
+	    ft = time.localtime(timestamp)
+	    string =  time.strftime('%Y-%m-%d %H:%M:%S', ft)
+	    return string
+
 
 	def get_file_number_in_dir(self, path):
 		count = 0
@@ -143,7 +149,7 @@ class MainHandler(tornado.web.RequestHandler):
 		return count
 
 	def make_dir(self, path):
-	    dname = self.get_dir_name()
+	    dname = self.get_dir_name()	    
 	    while True:
 	        if os.path.exists(path+'/'+dname)==False:
 	            break
@@ -157,25 +163,23 @@ class MainHandler(tornado.web.RequestHandler):
 	        filelist.extend(files)
 	    return filelist
 
-	def is_recognize(cctype):
-		if elem in _init_config.type_balck_list:
+	def is_recognized(self, cctype):
+		if cctype in _init_config.type_black_list:
 			return 1
 		return 0
 
-	def is_string_valid(string, cctype):
-		res = is_digit_alphabet(string)
+	def is_string_valid(self, string, cctype):
+		res = self.is_digit_alphabet(string)
 		if str(res)==cctype:
 			return 0
 		return 1
 
-	def is_digit_alphabet(string):
+	def is_digit_alphabet(self, string):
 		if string.isdigit():
 			return 0
 		elif string.isalpha():
 			return 1
 		return 2
-
-	def 
 
 
 if __name__ == "__main__":
