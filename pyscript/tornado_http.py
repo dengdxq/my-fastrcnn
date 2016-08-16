@@ -138,7 +138,7 @@ class MainHandler(tornado.web.RequestHandler):
 	    #return strs[0]
 	    #format date
 	    ft = time.localtime(timestamp)
-	    string =  time.strftime('%Y-%m-%d %H:%M:%S', ft)
+	    string = time.strftime('%Y-%m-%d_%H:%M:%S', ft)
 	    return string
 
 
