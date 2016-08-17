@@ -1,3 +1,5 @@
+import matplotlib 
+matplotlib.use('Agg') 
 import tornado.ioloop
 import tornado.web
 import urlparse
