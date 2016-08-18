@@ -84,12 +84,14 @@ class MainHandler(tornado.web.RequestHandler):
 		#---recognize---
 		start_time = time.time()
 		try:
+			print '==================================='
 			cc_value = fastrcnn.recognize_checkcode_img(CAFFE_NET, savepath, CLASS_TUPLE)['ccvalue']
 		except :
-			fp = StringIO.StringIO()    
-	    	traceback.print_exc(file=fp)
-	    	message = fp.getvalue()
-	    	self.logger.info('[ERROR-start]: TID:%serrorinfo:\n%s\n[ERROR-end]'%(param_dict['tid'], message))
+			print '123232344'
+			#fp = StringIO.StringIO()    
+	    	#traceback.print_exc(file=fp)
+	    	#message = fp.getvalue()
+	    	#self.logger.info('[ERROR-start]: TID:%serrorinfo:\n%s\n[ERROR-end]'%(param_dict['tid'], message))
 		end_time = time.time()
 		cc_result = '-1'
 		if cc_value != '':
