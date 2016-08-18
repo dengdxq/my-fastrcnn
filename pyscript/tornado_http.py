@@ -11,6 +11,8 @@ import random
 import base64
 import logging
 import os
+import traceback
+import StringIO
 from urllib import unquote
 #import threading
 
@@ -81,7 +83,13 @@ class MainHandler(tornado.web.RequestHandler):
 		img_num += 1
 		#---recognize---
 		start_time = time.time()
-		cc_value = fastrcnn.recognize_checkcode_img(CAFFE_NET, savepath, CLASS_TUPLE)['ccvalue']
+		try:
+			cc_value = fastrcnn.recognize_checkcode_img(CAFFE_NET, savepath, CLASS_TUPLE)['ccvalue']
+		except :
+			fp = StringIO.StringIO()    
+	    	traceback.print_exc(file=fp)
+	    	message = fp.getvalue()
+	    	self.logger.info('[ERROR-start]: TID:%serrorinfo:\n%s\n[ERROR-end]'%(param_dict['tid'], message))
 		end_time = time.time()
 		cc_result = '-1'
 		if cc_value != '':
@@ -93,11 +101,9 @@ class MainHandler(tornado.web.RequestHandler):
 		if len(param_dict['isalphabet'])!=0:
 			res = self.is_string_valid(cc_result, param_dict['isalphabet'])
 			if res==1: #not fit the fitness
-				self.logger.info('The RECOGNIZE Result don\'t satisfy the checkcode type!')
-				str_dict = {}
-				str_dict['errcode'] = 104
-				str_dict['errmsg'] = 'recognize type error!'
-				self.write(json.dumps(str_dict))
+				self.logger.info('TID:%s; The RECOGNIZE Result don\'t satisfy the checkcode type!'%(param_dict['tid']))
+				response_str = self.create_response(cc_value, param_dict['tid'])
+				self.write(response_str)
 				return
 		#'''
 		#
@@ -106,11 +112,11 @@ class MainHandler(tornado.web.RequestHandler):
 		self.write(response_str)
 
 	def create_response(self, cc_value, tid):
-		dict = {}
-		dict['result'] = cc_value
-		dict['tid'] = tid
-		dict['image'] = ''
-		response_str = json.dumps(dict)
+		str_dict = {}
+		str_dict['result'] = cc_value
+		str_dict['tid'] = tid
+		str_dict['image'] = ''
+		response_str = json.dumps(str_dict)
 		return response_str
 
 	def save_image(self, imgdata, savepath):
