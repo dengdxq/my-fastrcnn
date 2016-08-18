@@ -102,7 +102,7 @@ class MainHandler(tornado.web.RequestHandler):
 			res = self.is_string_valid(cc_result, param_dict['isalphabet'])
 			if res==1: #not fit the fitness
 				self.logger.info('TID:%s; The RECOGNIZE Result don\'t satisfy the checkcode type!'%(param_dict['tid']))
-				response_str = self.create_response(cc_value, param_dict['tid'])
+				response_str = self.create_response('', param_dict['tid'])
 				self.write(response_str)
 				return
 		#'''
