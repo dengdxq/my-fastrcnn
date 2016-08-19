@@ -2,8 +2,6 @@ import matplotlib
 matplotlib.use('Agg') 
 import tornado.ioloop
 import tornado.web
-import tornado.httpserver
-#import tornado.process
 import urlparse
 import fastrcnn
 import _init_config
@@ -87,14 +85,10 @@ class MainHandler(tornado.web.RequestHandler):
 		start_time = time.time()
 		try:
 			cc_value = fastrcnn.recognize_checkcode_img(CAFFE_NET, savepath, CLASS_TUPLE)['ccvalue']
-			#a = 1/0
 		except :
 			fp = StringIO.StringIO()
 			traceback.print_exc(file=fp)
 			message = fp.getvalue()
-			#print '[ERROR-start]: TID:%s'%(param_dict['tid'])
-			#print message
-			#print '[ERROR-end]'
 			self.logger.info('[ERROR-start]: TID:%s, errorinfo:\n%s\n[ERROR-end]'%(param_dict['tid'], message))
 		end_time = time.time()
 		cc_result = '-1'
@@ -202,13 +196,7 @@ if __name__ == "__main__":
 	load_caffe_net()
 	logger.info('load caffe net complete!')
 	application = tornado.web.Application([(r"/checkcode", MainHandler),])
-	#sockets = tornado.netutil.bind_sockets(8181)
-	#tornado.process.fork_processes(4)
-	server = tornado.httpserver.HTTPServer(application)
-	server.bind(8181)
-	server.start(0)
-	tornado.ioloop.IOLoop.instance().start()
-	#application.listen(8181)
+	application.listen(8183)
 	logger.info('checkcode recognize server start!')
-	#tornado.ioloop.IOLoop.instance().start()
+	tornado.ioloop.IOLoop.instance().start()
 	logger.info('checkcode recognize server complete!')
