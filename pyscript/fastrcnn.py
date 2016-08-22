@@ -263,17 +263,17 @@ def rect_filter(rectlist, th):
             continue
         cnt += 1
         pos += (rt['ymax'] + rt['ymin'])/2
-    avgpos = 1.0*pos/cnt
-    #print 'pos=%f'%(avgpos)
-    idx = -1
-    for rt in rectlist:
-        idx += 1
-        if idx in dellist:
-            continue
-        pos = (rt['ymax'] + rt['ymin'])/2
-        #print '(y1=%d,y2=%d,pos=%d)'%(rt['ymin'],rt['ymax'],pos)
-        if abs(pos-avgpos) > 20:
-            dellist.append(idx)
+    if cnt != 0:
+        avgpos = 1.0*pos/cnt
+        idx = -1
+        for rt in rectlist:
+            idx += 1
+            if idx in dellist:
+                continue
+            pos = (rt['ymax'] + rt['ymin'])/2
+            #print '(y1=%d,y2=%d,pos=%d)'%(rt['ymin'],rt['ymax'],pos)
+            if abs(pos-avgpos) > 20:
+                dellist.append(idx)
     #print dellist
     #
     datalist = []
