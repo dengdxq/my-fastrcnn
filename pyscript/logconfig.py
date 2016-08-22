@@ -7,7 +7,6 @@ import _init_config
 
 
 
-'''
 logging.config.dictConfig({
     'version': 1,
     'disable_existing_loggers': True,
@@ -53,7 +52,6 @@ logging.config.dictConfig({
     }
 })
 
-'''
 
 
 def log_config(log_file_name):
