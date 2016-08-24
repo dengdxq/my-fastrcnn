@@ -102,7 +102,7 @@ def recognize_img(net, image_name, box_file, classes):
 
 def load_image(image_name):
     im = cv2.imread(image_name)
-    if im==None:
+    if im is None:
         return None
     #print im
     #exit()
@@ -119,7 +119,7 @@ def load_image(image_name):
 
 def recognize_checkcode_img(net, image_name, classes):
     boxes = get_selective_search_boxes(image_name)
-    if boxes == None:
+    if boxes is None:
         dict = {}
         dict['ccvalue'] = ''
         dict['rects'] = []
@@ -192,7 +192,7 @@ def get_selective_search_boxes(imgpath):
         return None
     #img = io.imread(imgpath)
     img = load_image(imgpath)
-    if img==None:
+    if img is None:
         return None
     #print img
     #print type(img)
