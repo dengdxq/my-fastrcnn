@@ -11,6 +11,7 @@ import json
 import time
 import random
 import base64
+import shutil
 import os
 import traceback
 import StringIO
@@ -19,6 +20,7 @@ import logging.config
 import logging.handlers
 import logging
 import logconfig
+import imageprocess as imgprocess
 #import threading
 
 
@@ -84,9 +86,11 @@ class MainHandler(tornado.web.RequestHandler):
 			save_image_path = self.make_dir(_init_config.img_save_dir)
 			img_num = 0
 		#print param_dict['tid']
-		savepath = save_image_path + '/' + self.get_image_name() +'_'+param_dict['tid']+'_'+param_dict['type']+'.jpg'
+		randfilename = self.get_image_name()
+		savepath = save_image_path + '/' + randfilename +'_'+param_dict['tid']+'_'+param_dict['type']+'.jpg'
 		self.logger.info('TID:%s; SAVE Image:%s'%(param_dict['tid'], savepath))
 		self.save_image(param_dict['data'], savepath)
+		self.pre_process_image(savepath, param_dict['type']) #process specify checkcode image
 		img_num += 1
 		#---recognize---
 		start_time = time.time()
@@ -100,9 +104,10 @@ class MainHandler(tornado.web.RequestHandler):
 		end_time = time.time()
 		cc_result = '-1'
 		if cc_value != '':
-			cc_result = cc_value 
+			cc_result = cc_value
 		self.logger.info('TID:%s; recognize_checkcode_img take:%s sec'%(param_dict['tid'], str(end_time-start_time)))
 		self.logger.info('TID:%s; RECOGNIZE Result:%s<=>%s'%(param_dict['tid'], savepath, cc_result))
+		self.rename_image_file(savepath, randfilename, cc_value, param_dict, save_image_path)
 		#
 		#'''
 		if len(param_dict['isalphabet'])!=0:
@@ -188,6 +193,8 @@ class MainHandler(tornado.web.RequestHandler):
 		return 0
 
 	def is_string_valid(self, string, cctype):
+		if cmp(cctype, '2') == 0:
+			return 0
 		res = self.is_digit_alphabet(string)
 		if str(res)==cctype:
 			return 0
@@ -200,6 +207,13 @@ class MainHandler(tornado.web.RequestHandler):
 			return 1
 		return 2
 
+	def pre_process_image(self, path, cctype):
+		if cctype == 'psbc':
+			imgprocess.erase_psbc_image(path)
+
+	def rename_image_file(self, src, rfname, ccvalue, param_dict, savepath):
+		dst = savepath + '/' + rfname +'_'+param_dict['tid']+'_'+param_dict['type']+'_'+ ccvalue +'.jpg'
+		shutil.move(src, dst)
 
 
 if __name__ == "__main__":
