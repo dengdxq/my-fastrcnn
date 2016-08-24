@@ -125,7 +125,7 @@ class MainHandler(tornado.web.RequestHandler):
 
 	def create_response(self, cc_value, tid):
 		str_dict = {}
-		str_dict['result'] = cc_value
+		str_dict['result'] = cc_value.lower()
 		str_dict['tid'] = tid
 		str_dict['image'] = ''
 		response_str = json.dumps(str_dict)
