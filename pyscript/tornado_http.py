@@ -90,6 +90,9 @@ class MainHandler(tornado.web.RequestHandler):
 		savepath = save_image_path + '/' + randfilename +'_'+param_dict['tid']+'_'+param_dict['type']+'.jpg'
 		self.logger.info('TID:%s; SAVE Image:%s'%(param_dict['tid'], savepath))
 		self.save_image(param_dict['data'], savepath)
+		#convert to jpeg for other format
+		#self.convert_jpeg(savepath, '')
+		#
 		self.pre_process_image(savepath, param_dict['type']) #process specify checkcode image
 		img_num += 1
 		#---recognize---
@@ -214,6 +217,13 @@ class MainHandler(tornado.web.RequestHandler):
 	def rename_image_file(self, src, rfname, ccvalue, param_dict, savepath):
 		dst = savepath + '/' + rfname +'_'+param_dict['tid']+'_'+param_dict['type']+'_'+ ccvalue +'.jpg'
 		shutil.move(src, dst)
+
+	def convert_jpeg(self, imgpath, imgtype):
+		if cmp(imgtype,'jpg')==0 or cmp(imgtype,'jpeg')==0:
+			return
+		im = Image.open(imgpath)
+		im = im.convert('RGB')
+		im.save(imgpath, 'jpeg')
 
 
 if __name__ == "__main__":
