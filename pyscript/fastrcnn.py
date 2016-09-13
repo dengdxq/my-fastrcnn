@@ -272,7 +272,7 @@ def rect_filter(rectlist, th):
                 continue
             pos = (rt['ymax'] + rt['ymin'])/2
             #print '(y1=%d,y2=%d,pos=%d)'%(rt['ymin'],rt['ymax'],pos)
-            if abs(pos-avgpos) > 20:
+            if abs(pos-avgpos) > 21:
                 dellist.append(idx)
     #print dellist
     #
@@ -330,7 +330,7 @@ def char_roi_filter(rectlist):
             area = calc_rect_overlap_area(rectlist[idx1], rectlist[idx2])
             #print '(%d,%d)=%f'%(idx1,idx2,area)
             #print '========================'
-            if area < 0.5:
+            if area < 0.4:
                 continue
             area_list[str(idx2)] = area
         if len(area_list)==0:
