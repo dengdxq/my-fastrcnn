@@ -40,7 +40,7 @@ logging.config.dictConfig({
             # If delay is true,
             # then file opening is deferred until the first call to emit().
             'delay': True,
-            'filename': '/data/online/logs/checkcode_iserror.log',
+            'filename': '/data/checkcode/logs/checkcode_iserror.log',
             'formatter': 'verbose'
         }
     },

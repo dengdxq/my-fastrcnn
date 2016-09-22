@@ -84,7 +84,7 @@ def log_config(log_file_name):
             #'maxBytes': 1024 * 1024 * 10,
             'maxBytes': _init_config.log_file_size,
             # 最多保留50份文件
-            'backupCount': _init_config.log_file_max_num,
+            #'backupCount': _init_config.log_file_max_num,
             # If delay is true,
             # then file opening is deferred until the first call to emit().
             'delay': True,

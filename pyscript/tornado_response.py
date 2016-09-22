@@ -39,7 +39,7 @@ if __name__ == "__main__":
 	thread_name = port
 	logger = logging.getLogger('main')
 	logger.info('restart isright server!')
-	application = tornado.web.Application([(r"/ccright", MainHandler),])
+	application = tornado.web.Application([(r"/report", MainHandler),])
 	application.listen(int(port))
 	logger.info('checkcode isright server start!')
 	tornado.ioloop.IOLoop.instance().start()
