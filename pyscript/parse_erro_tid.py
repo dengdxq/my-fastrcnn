@@ -10,6 +10,10 @@ import StringIO
 import shutil
 import datetime
 
+
+total_cnt = 0
+right_cnt = 0 
+
 def get_file_list(path, suffix):
     filelist = []
     for root,dirs,files in os.walk(path):
@@ -92,7 +96,9 @@ def get_error_tids(filepath):
 	pfile.close()
 	return err_tid_set
 
-def filter_files(srcpath, dstpath, files, day_timestamp, datestr, err_set):
+def filter_files(srcpath, dstpath, files, tid_freq, day_timestamp, datestr, err_set):
+	global total_cnt
+	global right_cnt
 	if os.path.exists(dstpath+'/'+datestr) == False:
 		os.mkdir(dstpath+'/'+datestr)
 	dpath = dstpath+'/'+datestr
@@ -105,56 +111,99 @@ def filter_files(srcpath, dstpath, files, day_timestamp, datestr, err_set):
 		timestamp = int(strs[0])
 		if timestamp<start or timestamp>end:
 			continue	
-		if err_set.has_key(str[2]) and err_set[str[2]]==1:
+		tid = strs[2]
+		total_cnt += 1
+		if err_set.has_key(tid) == False:
+			shutil.copy(srcpath+'/'+elem, dstpath+'/'+datestr+'/'+elem)
+			right_cnt += 1
 			continue
-		elif err_set.has_key(str[2]) and err_set[str[2]]>1 :
-			if file_dict.has_key(str[2])==True:
-				file_dict[str[2]].append(elem)
-			else :
-				file_dict[str[2]] = list()
-				file_dict[str[2]].append(elem)
+		file_freq = tid_freq[tid]
+		if err_set[tid]==1 and file_freq==1:
+			#test_list.append(tid)
+			#test_set.add(tid)
 			continue
-		#if strs[2] in err_set:
-		#	print elem
-		#	continue
-		shutil.copy(srcpath+'/'+elem, dstpath+'/'+datestr+'/'+elem)
-		#print srcpath+'/'+elem
-		#print dstpath+'/'+datestr+'/'+elem
+		if file_freq < err_set[tid]:
+			print '=================='
+			continue
+		#test_set.add(tid)
+		if file_dict.has_key(tid)==True:
+			file_dict[tid].append(elem)
+		else :
+			file_dict[tid] = list()
+			file_dict[tid].append(elem)
+			#test_list.append(tid)
 	#process more than one tid
-	for k,v in file_dict.iteritems():
-		tid = k
-		flist = v
+	#print file_dict
+	#print 'cnt=%d'%(cnt)
+	#print 'cnt12=%d'%(cnt1+cnt2)
+	#print 'cnt2=%d'%(cnt2)
+	for tid,flist in file_dict.iteritems():
 		flist.sort()
 		flen = len(flist)
 		num = err_set[tid]
-		if num >= flen:
+		if num > flen:
+			print '-------------'
 			continue
 		rest_files = []
 		for i in list(xrange(num, flen)):
 			rest_files.append(flist[i])		
+		#print flist
+		#print 'num=%d,flen=%d'%(num,flen)
+		#print rest_files
+		#print '-=-=-=-=-=-=-=-=-=-=-=-=-=-='
 		for elem in rest_files:
+			right_cnt += 1
 			shutil.copy(srcpath+'/'+elem, dstpath+'/'+datestr+'/'+elem)
 
+def get_tid_dict_from_files(filelist):
+	tid_dict = {}
+	for elem in filelist:
+		strs = elem.split('_')
+		if tid_dict.has_key(strs[2]):
+			tid_dict[strs[2]] += 1
+		else:
+			tid_dict[strs[2]] = 1
+	return tid_dict
+
+
+def save_result(path):
+	global total_cnt
+	global right_cnt
+	pfile = open(path, 'w')
+	pfile.write('total='+str(total_cnt)+'\n')
+	pfile.write('right='+str(right_cnt)+'\n')
+	pfile.write('accurate='+str(1.0*right_cnt/total_cnt)+'\n')
+	pfile.close()
+
 if __name__ == '__main__':
+	#global total_cnt
+	#global right_cnt
 	srcpath = '/data/checkcode/imgs'
 	dstpath = '/data/checkcode/right_imgs'
-	datestr = get_yesterday_date()#get_local_date()
+	datestr = get_yesterday_date()#'2016-09-26'#get_yesterday_date()#get_local_date()
 	day_timestamp = get_date_timestamp(datestr)
 	dirlist = get_xdate_dir_list(srcpath, datestr)
-	print dirlist
-	print day_timestamp
-	yesterdate = get_yesterday_date()
-	print yesterdate
+	#print dirlist
+	#print day_timestamp
+	yesterdate = datestr#get_yesterday_date()
+	#print yesterdate
 	logfile = '/data/checkcode/logs/'+'checkcode_iserror.log.'+yesterdate
 	if os.path.exists(logfile)==False:
 		print '%s log file is no exist!'%(logfile)
 		exit()
+	#print logfile
 	errtid = get_error_tids(logfile)	
-	#print '===errtaskid=='
 	#print errtid
+	#print '===errtaskid=='
+	#print 'error tid = %d'%(len(errtid))
 	#exit()
 	for elem in dirlist:
 		#print srcpath + '/'+elem
 		files = get_file_list(srcpath + '/'+elem, 'jpg') 
+		file_dict = get_tid_dict_from_files(files)
 		#print len(files)
-		filter_files(srcpath+'/'+elem, dstpath, files, day_timestamp, datestr, errtid)
+		filter_files(srcpath+'/'+elem, dstpath, files, file_dict, day_timestamp, datestr, errtid)
+	#print 'rest err = %d'%(len(test_set))
+	#print 'total=%d'%(total_cnt)
+	#print 'right=%d'%(right_cnt)
+	save_result('/data/checkcode/code/cnt_log/'+datestr+'_right.txt')	
