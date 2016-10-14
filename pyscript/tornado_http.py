@@ -147,6 +147,7 @@ class MainHandler(tornado.web.RequestHandler):
 		imgtype = imghdr.what(savepath)
 		if cmp(imgtype,'jpg')==0 or cmp(imgtype,'jpeg')==0:
 			return
+		self.logger.info('In save_image(), change %s to jpg'%(imgtype))
 		strs = savepath.split('/')
 		strs.pop()
 		tmppath = '/'.join(strs)
