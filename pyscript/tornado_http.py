@@ -21,7 +21,8 @@ import logging.handlers
 import logging
 import logconfig
 import imageprocess as imgprocess
-#import threading
+import imghdr
+import Image
 
 
 thread_name = ''
@@ -91,7 +92,8 @@ class MainHandler(tornado.web.RequestHandler):
 		self.logger.info('TID:%s; SAVE Image:%s'%(param_dict['tid'], savepath))
 		self.save_image(param_dict['data'], savepath)
 		#convert to jpeg for other format
-		#self.convert_jpeg(savepath, '')
+		#print savepath
+		#self.convert_jpeg(savepath)
 		#
 		self.pre_process_image(savepath, param_dict['type']) #process specify checkcode image
 		img_num += 1
@@ -141,6 +143,26 @@ class MainHandler(tornado.web.RequestHandler):
 		file = open(savepath, 'wb')
 		file.write(string)
 		file.close()
+		#type
+		imgtype = imghdr.what(savepath)
+		if cmp(imgtype,'jpg')==0 or cmp(imgtype,'jpeg')==0:
+			return
+		strs = savepath.split('/')
+		strs.pop()
+		tmppath = '/'.join(strs)
+		tmppath = tmppath+'/tmp.'+imgtype
+		#save tmp file
+		file = open(tmppath, 'wb')
+		file.write(string)
+		file.close()
+		#
+		if os.path.exists(savepath)==True:
+			os.remove(savepath)
+		im = Image.open(tmppath)
+		im = im.convert('RGB')
+		im.save(savepath, 'jpeg')
+		if os.path.exists(tmppath)==True:
+			os.remove(tmppath)
 
 	def get_image_name(self):
 	    alpha_list = ['z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a']
@@ -218,13 +240,20 @@ class MainHandler(tornado.web.RequestHandler):
 		dst = savepath + '/' + rfname +'_'+param_dict['tid']+'_'+param_dict['type']+'_'+ ccvalue +'.jpg'
 		shutil.move(src, dst)
 
-	def convert_jpeg(self, imgpath, imgtype):
+	def convert_jpeg(self, imgpath):
+		imgtype = imghdr.what(imgpath)
+		print imgtype
 		if cmp(imgtype,'jpg')==0 or cmp(imgtype,'jpeg')==0:
 			return
-		im = Image.open(imgpath)
+		strs = imgpath.split('/')
+		strs.pop()
+		path = '/'.join(strs)
+		print path
+		path = path+'/tmp.'+imgtype
+		print path
+		im = Image.open(path)
 		im = im.convert('RGB')
 		im.save(imgpath, 'jpeg')
-
 
 if __name__ == "__main__":
 	global thread_name
