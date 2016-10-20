@@ -175,10 +175,10 @@ def recognize_checkcode_img(net, image_name, classes):
     #return data_string
     
 
-def load_caffe_net(prototxt, caffemodel, issetgpu):
+def load_caffe_net(prototxt, caffemodel, issetgpu, cpuno):
     if issetgpu==1:
         caffe.set_mode_gpu()
-        caffe.set_device(0)
+        caffe.set_device(cpuno)
     else:
         caffe.set_mode_cpu()
     net = caffe.Net(prototxt, caffemodel, caffe.TEST)

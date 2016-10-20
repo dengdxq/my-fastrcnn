@@ -31,9 +31,9 @@ CLASS_TUPLE = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','
 img_num = 0
 save_image_path = ''
 
-def load_caffe_net():
+def load_caffe_net(iscpu, cpuno):
 	global CAFFE_NET
-	CAFFE_NET = fastrcnn.load_caffe_net(_init_config.prototxt, _init_config.caffemodel, 1)
+	CAFFE_NET = fastrcnn.load_caffe_net(_init_config.prototxt, _init_config.caffemodel, iscpu, cpuno)
 	
 
 class MainHandler(tornado.web.RequestHandler):	
@@ -257,14 +257,19 @@ class MainHandler(tornado.web.RequestHandler):
 		im.save(imgpath, 'jpeg')
 
 if __name__ == "__main__":
-	global thread_name
+	#global thread_name
+	#print len(sys.argv)
 	port = sys.argv[1]
+	iscpu = int(sys.argv[2])
+	cpuno = int(sys.argv[3])
+	#print type(cpuno)
+	#exit()
 	#log_name = 'checkcode.log'#sys.argv[2]
-	thread_name = port
+	#thread_name = port
 	#
 	logger = logging.getLogger('main')
 	logger.info('restart recognize server!')
-	load_caffe_net()
+	load_caffe_net(iscpu, cpuno)
 	logger.info('load caffe net complete!')
 	application = tornado.web.Application([(r"/checkcode", MainHandler),])
 	application.listen(int(port))
