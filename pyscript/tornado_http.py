@@ -23,6 +23,7 @@ import logconfig
 import imageprocess as imgprocess
 import imghdr
 import Image
+import process_gjj_tianjin as process_tj
 
 
 thread_name = ''
@@ -100,7 +101,10 @@ class MainHandler(tornado.web.RequestHandler):
 		#---recognize---
 		start_time = time.time()
 		try:
-			cc_value = fastrcnn.recognize_checkcode_img(CAFFE_NET, savepath, CLASS_TUPLE)['ccvalue']
+			if 'tianjin' in param_dict['type']:
+				cc_value = process_tj.recognize_gjj_tianjin(savepath)['ccvalue']
+			else:
+				cc_value = fastrcnn.recognize_checkcode_img(CAFFE_NET, savepath, CLASS_TUPLE)['ccvalue']
 		except :
 			fp = StringIO.StringIO()
 			traceback.print_exc(file=fp)
